@@ -3,10 +3,9 @@ import ArtGenerator from "../components/ArtGenerator/ArtGenerator";
 
 const ArtGenerationPage: React.FC = () => {
   return (
-    <div className="min-h-screenflex justify-between items-start">
+    <div className="min-h-screen flex justify-between items-start ">
       <div className="container mx-auto flex flex-col md:flex-row">
         <div className="md:w-3/5">
-
           <ArtGenerator />
         </div>
         <div className="md:w-2/5 flex justify-center items-start mt-2">

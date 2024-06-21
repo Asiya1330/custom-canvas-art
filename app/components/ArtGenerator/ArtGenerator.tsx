@@ -83,7 +83,7 @@ const ArtGenerator: React.FC = () => {
         description={description}
         setDescription={setDescription}
       />
-      <div className='flex justify-center md:justify-between flex-wrap mt-4 items-center'>
+      <div className='flex justify-center md:justify-between flex-wrap mt-4 items-center md:items-start'>
         <ImageUpload
           loading={loading}
           handleFileChange={handleFileChange}

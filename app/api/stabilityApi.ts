@@ -28,9 +28,13 @@ export const generateImage = async (payload: Record<string, string | null>) => {
 
 export const uploadAndGenerateImage = async (file: File, prompt: string) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('image', file);
   formData.append('prompt', prompt);
   formData.append('output_format', 'jpeg');
+  formData.append('mode', 'image-to-image');
+  formData.append('strength', '0.5');
+
+
 
   const response = await axios.post(
     'https://api.stability.ai/v2beta/stable-image/generate/sd3',
