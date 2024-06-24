@@ -25,8 +25,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ loading, handleFileChange, se
     }, [selectedFile]);
 
     return (
-        <div className="text-right mt-2">
-            <label className="px-4 py-2 bg-green-500 text-white rounded-md cursor-pointer hover:bg-green-600">
+        <div className="text-center flex flex-col">
+            <label className="w-fit px-4 py-2 bg-custom-green text-white rounded-md cursor-pointer hover:bg-green-600">
                 Upload Image
                 <input type="file" className="hidden" onChange={handleFileChange} />
             </label>

@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Recoleta';
+  src: url('/fonts/Recoleta-RegularDEMO.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/Avenir/Avenir Regular/Avenir Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -16,9 +30,21 @@
   }
 }
 
+
+
 body {
-  color: rgb(var(--foreground-rgb));
+  font-family: 'Avenir', sans-serif;
+  color: #01152D;
   background: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Recoleta', sans-serif;
 }
 
 @layer utilities {

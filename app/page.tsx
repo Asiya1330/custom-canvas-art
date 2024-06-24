@@ -11,7 +11,7 @@ export default function Home() {
           <p className="mt-2 text-gray-700">Get a one-of-a kind piece in the exact size you want.</p>
         </div>
         <div className="w-4/10 p-4 flex flex-col items-center">
-          <p className="text-green-500 mb-2">Create an account</p>
+          <p className="text-custom-black mb-2">Create an account</p>
           <button className="bg-green-500 text-white px-4 py-2 w-full">Start</button>
         </div>
         </div>

@@ -8,7 +8,7 @@ interface AspectRatioBoxProps {
   const AspectRatioBox: React.FC<AspectRatioBoxProps> = ({ aspectRatio, selected, onClick }) => {
     return (
       <div
-        className={`cursor-pointer m-1 flex items-center justify-center text-white text-xs px-2 h-9 md:h-auto rounded md:rounded-none ${selected ? 'bg-purple-500' : 'bg-green-500'}`}
+        className={`cursor-pointer m-1 flex items-center justify-center text-white pt-1 text-xs px-2 h-9 md:h-auto rounded md:rounded-none ${selected ? 'bg-custom-purple' : 'bg-custom-green'}`}
         onClick={() => onClick(aspectRatio)}
       >
         {aspectRatio}

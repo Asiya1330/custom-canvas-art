@@ -9,7 +9,7 @@ const ArtGenerationPage: React.FC = () => {
           <ArtGenerator />
         </div>
         <div className="md:w-2/5 flex justify-center items-start mt-2">
-          <button className="flex items-center px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600">
+          <button className="flex items-center px-4 py-2 bg-custom-green text-white rounded-full hover:bg-green-600">
             Go to Saved Art
             <FaHeart className="ml-2" />
           </button>

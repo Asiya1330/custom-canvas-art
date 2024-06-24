@@ -26,14 +26,13 @@ export const generateImage = async (payload: Record<string, string | null>) => {
   return response;
 };
 
-export const uploadAndGenerateImage = async (file: File, prompt: string) => {
+export const uploadAndGenerateImage = async (file: File, prompt: string, strength: number) => {
   const formData = new FormData();
   formData.append('image', file);
   formData.append('prompt', prompt);
   formData.append('output_format', 'jpeg');
   formData.append('mode', 'image-to-image');
-  formData.append('strength', '0.5');
-
+  formData.append('strength', strength.toString());
 
 
   const response = await axios.post(

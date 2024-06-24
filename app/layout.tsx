@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import ToastProvider from "./components/ToastProvider";
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,10 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <Header />
         <main className="flex-grow container mx-auto p-4">
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </main>
         <Footer />
       </body>

@@ -8,10 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      // backgroundImage: {
+      //   "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      //   "gradient-conic":
+      //     "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      // },
+      colors: {
+        'custom-purple': '#7500EA',
+        'custom-pink': '#CE22FA',
+        'custom-black': '#01152D',
+        'custom-green': '#0CA156',
+        'custom-purple-dark': '#CE22FA8E'
+
+      },
+      fontFamily: {
+        header: ['Recoleta', 'serif'],
+        body: ['Avenir', 'sans-serif'],
       },
     },
   },

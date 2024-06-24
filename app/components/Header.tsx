@@ -17,11 +17,15 @@ const Header: React.FC = () => {
       <header className="bg-gray-800 text-white p-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" passHref>
-              <GiIndianPalace size={"2em"} />
-              {/* <Image src="/logo.png" alt="Logo" width={50} height={50} className="mr-4" /> */}
+            <Link href="/" passHref className='flex items-center'>
+              {/* <GiIndianPalace size={"2em"} /> */}
+              <Image src="/Icon-Logo.svg" alt="Logo" width={50} height={50} className="mr-2" />
+              <h1 className="ml-2 text-xl font-bold">
+                <Image src="/logo.svg" alt="Logo" width={150} height={100} className="mr-4" />
+
+              </h1>
             </Link>
-            <h1 className="ml-2 text-xl font-bold">Custom Canvas</h1>
+
           </div>
           <div className="flex items-center">
             <Link href="/login" passHref className="text-white mr-4 hover:underline">
