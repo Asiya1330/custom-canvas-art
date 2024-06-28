@@ -28,7 +28,7 @@ const ArtGenerationPage: React.FC = () => {
 
     fetchImages();
   }, [userId]);
-  
+
   const addImage = (newImage: DocumentData) => {
     setImages((prevImages) => [newImage, ...prevImages]);
   };
@@ -36,14 +36,16 @@ const ArtGenerationPage: React.FC = () => {
     <div className="min-h-screen flex justify-between items-start ">
       <div className="container mx-auto flex flex-col md:flex-row gap-4">
         <div className="md:w-3/5">
-          <ArtGenerator addImage={addImage}/>
+          <ArtGenerator addImage={addImage} />
         </div>
         <div className="md:w-2/5 flex flex-col items-center mt-2">
           <button className="flex items-center px-4 py-2 bg-custom-green text-white rounded-full hover:bg-green-600">
             Go to Saved Art
             <FaHeart className="ml-2" />
           </button>
-          <ImagesDisplay images={images}/>
+          <label className="text-custom-green mt-2">Recent Favourites</label>
+
+          <ImagesDisplay images={images} />
         </div>
       </div>
     </div>
