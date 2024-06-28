@@ -17,7 +17,7 @@ interface ArtGeneratorProps {
 
 const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [description, setDescription] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
