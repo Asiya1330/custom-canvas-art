@@ -1,22 +1,20 @@
 "use client";
 import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
-import Image from 'next/image';
+import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import { MoonLoader } from 'react-spinners';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AspectRatioBox from './AspectRatioBox';
 import DescriptionInput from './DescriptionInput';
+import FavoriteImage from './GeneratedImage';
 import ImageUpload from './ImageUpload';
 import ProgressBar from './ProgressBar';
-import UploadComponent from '../UploadImage';
-import { auth } from '@clerk/nextjs/server';
-import { useAuth } from '@clerk/nextjs';
 
 
 const ArtGenerator: React.FC = () => {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [strength, setStrength] = useState(0.5);
@@ -28,7 +26,7 @@ const ArtGenerator: React.FC = () => {
       return;
     }
     setLoading(true);
-    setImage(null); // Reset the image
+    setImageBlob(null);
 
     try {
       let response;
@@ -54,7 +52,7 @@ const ArtGenerator: React.FC = () => {
       if (response.status === 200) {
         const blob = new Blob([response.data], { type: selectedFile ? 'image/jpeg' : 'image/webp' });
         const imageUrl = URL.createObjectURL(blob);
-        setImage(imageUrl);
+        setImageBlob(blob);
         toast.success("Image generated successfully!");
       } else {
         console.error(`${response.status}: ${response.data.toString()}`);
@@ -79,13 +77,9 @@ const ArtGenerator: React.FC = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-  const { userId } = useAuth();
-  console.log(userId,"clerk user id");
 
   return (
     <div className="py-4">
-      <ToastContainer />
-      <UploadComponent />
       <label className="text-custom-black block">Aspect ratio</label>
       <div className="flex flex-wrap justify-center md:justify-start">
 
@@ -121,12 +115,8 @@ const ArtGenerator: React.FC = () => {
       </div>
 
       {loading && <div className='flex mt-4 justify-center items-center'> <MoonLoader /></div>}
-      {image &&
-        <div className='w-full flex justify-center mt-4'>
-        <div className='relative max-w-full w-full min-h-80'>
-          <Image src={image} alt="Generated Art" className="absolute top-0 left-0 w-full h-full object-contain" layout="fill" />
-        </div>
-      </div>
+      {imageBlob &&
+        <FavoriteImage imageFile={imageBlob} description={description} />
       }
     </div>
   );

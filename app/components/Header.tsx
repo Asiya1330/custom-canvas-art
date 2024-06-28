@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiMenu } from 'react-icons/fi';
@@ -13,6 +13,11 @@ const Header: React.FC = () => {
   const toggleSideMenu = () => {
     setIsSideMenuOpen(!isSideMenuOpen);
   };
+  const closeSideMenu = () => {
+    setIsSideMenuOpen(false);
+  };
+
+ 
   return (
     <>
       <header className="bg-gray-800 text-white p-4">
@@ -39,7 +44,7 @@ const Header: React.FC = () => {
               </Link>
             </SignedOut>
             <SignedIn>
-              <div className='mr-2'>
+              <div className='mr-2 flex'>
               <UserButton />
               </div>
             </SignedIn>
@@ -48,8 +53,9 @@ const Header: React.FC = () => {
         </div>
       </header>
       <SideMenu isOpen={isSideMenuOpen} onClose={toggleSideMenu} />
+      {isSideMenuOpen && <div className="fixed inset-0 z-0" onClick={closeSideMenu}></div>}
     </>
   );
 };
 
-export default Header;
+export default Header; 

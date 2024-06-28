@@ -1,18 +1,20 @@
 import { FaHeart } from "react-icons/fa";
 import ArtGenerator from "../components/ArtGenerator/ArtGenerator";
+import ImagesDisplay from "../components/ImagesDisplay";
 
 const ArtGenerationPage: React.FC = () => {
   return (
     <div className="min-h-screen flex justify-between items-start ">
-      <div className="container mx-auto flex flex-col md:flex-row">
+      <div className="container mx-auto flex flex-col md:flex-row gap-4">
         <div className="md:w-3/5">
           <ArtGenerator />
         </div>
-        <div className="md:w-2/5 flex justify-center items-start mt-2">
+        <div className="md:w-2/5 flex flex-col items-center mt-2">
           <button className="flex items-center px-4 py-2 bg-custom-green text-white rounded-full hover:bg-green-600">
             Go to Saved Art
             <FaHeart className="ml-2" />
           </button>
+          <ImagesDisplay />
         </div>
       </div>
     </div>
