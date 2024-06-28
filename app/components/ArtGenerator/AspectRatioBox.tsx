@@ -1,4 +1,4 @@
-import { LuRectangleHorizontal } from "react-icons/lu";
+import { LuRectangleHorizontal, LuRectangleVertical, LuSquare } from "react-icons/lu";
 
 // components/AspectRatioBox.tsx
 interface AspectRatioBoxProps {
@@ -8,9 +8,14 @@ interface AspectRatioBoxProps {
 }
 
 const AspectRatioBox: React.FC<AspectRatioBoxProps> = ({ aspectRatio, selected, onClick }) => {
+  const icon = aspectRatio === '1:1'
+    ? <LuSquare className="mr-2" />
+    : aspectRatio === '21:9'
+      ? <LuRectangleHorizontal className="mr-2" />
+      : aspectRatio === '9:21' ? <LuRectangleVertical className="mr-2" /> : '';
   return (
     <div>
-      <LuRectangleHorizontal className="m-1" />
+      {/* {icon} */}
       <div
         className={`cursor-pointer m-1 flex items-center justify-center text-white pt-1 text-xs px-2 h-9 md:h-auto rounded md:rounded-none ${selected ? 'bg-custom-purple' : 'bg-custom-green'}`}
         onClick={() => onClick(aspectRatio)}

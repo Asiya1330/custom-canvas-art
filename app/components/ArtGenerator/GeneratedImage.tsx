@@ -13,6 +13,7 @@ interface FavoriteImageProps {
 
 const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { userId } = useAuth();
 
   const handleFavoriteClick = async () => {
@@ -20,7 +21,11 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description })
       toast.error("User not authenticated.");
       return;
     }
-
+    if (isFavorite) {
+      toast.info("Image is already in favorites.");
+      return;
+    }
+    setLoading(true);
     try {
       await uploadImageToFirestore(userId, imageFile, description);
       toast.success("Image saved to favorites!");
@@ -28,6 +33,8 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description })
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while saving the image.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,10 +46,13 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description })
         <Image src={imageUrl} alt="Generated Art" className="absolute top-0 left-0 w-full h-full object-contain" layout="fill" />
       </div>
       <button
-        className="absolute top-2 right-2 text-red-500"
+        className={`absolute top-2 right-2 ${loading ? 'cursor-not-allowed' : 'cursor-pointer'} 
+         ${isFavorite ? 'text-red-500 hover:text-red-700' : 'text-gray-500 hover:text-gray-700'}`}
+
         onClick={handleFavoriteClick}
+        disabled={loading}
       >
-        {isFavorite ? <AiFillHeart size={30} /> : <AiOutlineHeart size={30} />}
+        {isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart size={20} />}
       </button>
     </div>
   );

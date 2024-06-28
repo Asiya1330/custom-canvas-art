@@ -1,6 +1,7 @@
 import { FaHeart } from "react-icons/fa";
 import ArtGenerator from "../components/ArtGenerator/ArtGenerator";
 import ImagesDisplay from "../components/ImagesDisplay";
+import AuthWrapper from "../components/AuthWrapper";
 
 const ArtGenerationPage: React.FC = () => {
   return (

@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
+// TODO: Add keys to env
+
 const firebaseConfig = {
   apiKey: "AIzaSyCdLG16UvKTTQ1V6W7ZtxJdFJsMkKEjdJw",
   authDomain: "custom-canvas-27b6a.firebaseapp.com",

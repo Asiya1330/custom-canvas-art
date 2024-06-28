@@ -9,6 +9,8 @@ import DescriptionInput from './DescriptionInput';
 import FavoriteImage from './GeneratedImage';
 import ImageUpload from './ImageUpload';
 import ProgressBar from './ProgressBar';
+import RectanglesWithArrow from '../RectanglesWithArrow';
+import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
 
 
 const ArtGenerator: React.FC = () => {
@@ -78,10 +80,19 @@ const ArtGenerator: React.FC = () => {
     }
   };
 
+  const width = 300; // Set a fixed width for the loading box
+  const height = selectedAspectRatio ? getHeightFromAspectRatio(selectedAspectRatio, width) : 0;
+
+
   return (
-    <div className="py-4">
+    <div className="py-4 relative">
       <label className="text-custom-black block">Aspect ratio</label>
-      <div className="flex flex-wrap justify-center md:justify-start">
+      <div className="flex flex-wrap justify-center md:justify-start w-fit flex-col">
+        <div className='block'>
+          <RectanglesWithArrow />
+        </div>
+        <div className='flex flex-wrap justify-center'>
+
 
         {aspectRatios.map((ratio) => (
           <AspectRatioBox
@@ -91,6 +102,7 @@ const ArtGenerator: React.FC = () => {
             onClick={handleAspectRatioClick}
           />
         ))}
+        </div>
       </div>
       <ProgressBar strength={strength} setStrength={setStrength} />
       <DescriptionInput
@@ -114,7 +126,11 @@ const ArtGenerator: React.FC = () => {
         </div>
       </div>
 
-      {loading && <div className='flex mt-4 justify-center items-center'> <MoonLoader /></div>}
+      {loading && (
+        <div className='relative flex mt-4 justify-center mx-auto items-center' style={{ height: `${height}px`, width: `${width}px` }}>
+          <LoadingOverlay width={width} height={height} />
+        </div>
+      )}
       {imageBlob &&
         <FavoriteImage imageFile={imageBlob} description={description} />
       }
