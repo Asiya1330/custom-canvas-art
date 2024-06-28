@@ -1,17 +1,15 @@
 "use client";
 import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
-import { useAuth } from '@clerk/nextjs';
+import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import { MoonLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
+import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
+import RectanglesWithArrow from '../RectanglesWithArrow';
 import AspectRatioBox from './AspectRatioBox';
 import DescriptionInput from './DescriptionInput';
 import FavoriteImage from './GeneratedImage';
 import ImageUpload from './ImageUpload';
 import ProgressBar from './ProgressBar';
-import RectanglesWithArrow from '../RectanglesWithArrow';
-import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
-import { DocumentData } from 'firebase/firestore';
 
 interface ArtGeneratorProps {
   addImage: (newImage: DocumentData) => void;
@@ -19,7 +17,7 @@ interface ArtGeneratorProps {
 
 const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [description, setDescription] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -87,7 +85,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
     }
   };
 
-  const width = 300; // Set a fixed width for the loading box
+  const width = 200; // Set a fixed width for the loading box
   const height = selectedAspectRatio ? getHeightFromAspectRatio(selectedAspectRatio, width) : 0;
 
 
