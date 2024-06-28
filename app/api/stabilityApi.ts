@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API_KEY = process.env.NEXT_PUBLIC_STABILITY_API_KEY;
 
@@ -11,14 +11,14 @@ export const generateImage = async (payload: Record<string, string | null>) => {
   });
 
   const response = await axios.post(
-    'https://api.stability.ai/v2beta/stable-image/generate/ultra',
+    "https://api.stability.ai/v2beta/stable-image/generate/ultra",
     formData,
     {
       validateStatus: undefined,
-      responseType: 'arraybuffer',
+      responseType: "arraybuffer",
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Accept': 'image/*'
+        Authorization: `Bearer ${API_KEY}`,
+        Accept: "image/*",
       },
     }
   );
@@ -26,24 +26,27 @@ export const generateImage = async (payload: Record<string, string | null>) => {
   return response;
 };
 
-export const uploadAndGenerateImage = async (file: File, prompt: string, strength: number) => {
+export const uploadAndGenerateImage = async (
+  file: File,
+  prompt: string,
+  strength: number,
+) => {
   const formData = new FormData();
-  formData.append('image', file);
-  formData.append('prompt', prompt);
-  formData.append('output_format', 'jpeg');
-  formData.append('mode', 'image-to-image');
-  formData.append('strength', strength.toString());
-
+  formData.append("image", file);
+  formData.append("prompt", prompt);
+  formData.append("output_format", "jpeg");
+  formData.append("mode", "image-to-image");
+  formData.append("strength", strength.toString());
 
   const response = await axios.post(
-    'https://api.stability.ai/v2beta/stable-image/generate/sd3',
+    "https://api.stability.ai/v2beta/stable-image/generate/sd3",
     formData,
     {
       validateStatus: undefined,
-      responseType: 'arraybuffer',
+      responseType: "arraybuffer",
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Accept': 'image/*'
+        Authorization: `Bearer ${API_KEY}`,
+        Accept: "image/*",
       },
     }
   );

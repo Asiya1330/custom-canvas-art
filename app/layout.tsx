@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ToastProvider from "./components/ToastProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,16 +18,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        <main className="flex-grow container mx-auto p-4">
-          <ToastProvider>
-            {children}
-          </ToastProvider>
-        </main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <Header />
+          <main className="flex-grow container mx-auto p-4">
+            <ToastProvider>
+              {children}
+            </ToastProvider>
+          </main>
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

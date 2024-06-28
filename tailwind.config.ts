@@ -19,7 +19,6 @@ const config: Config = {
         'custom-black': '#01152D',
         'custom-green': '#0CA156',
         'custom-purple-dark': '#CE22FA8E'
-
       },
       fontFamily: {
         header: ['Recoleta', 'serif'],

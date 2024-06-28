@@ -3,11 +3,15 @@ import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
 import Image from 'next/image';
 import { useState } from 'react';
 import { MoonLoader } from 'react-spinners';
+import { ToastContainer, toast } from 'react-toastify';
 import AspectRatioBox from './AspectRatioBox';
 import DescriptionInput from './DescriptionInput';
 import ImageUpload from './ImageUpload';
 import ProgressBar from './ProgressBar';
-import { ToastContainer, toast } from 'react-toastify';
+import UploadComponent from '../UploadImage';
+import { auth } from '@clerk/nextjs/server';
+import { useAuth } from '@clerk/nextjs';
+
 
 const ArtGenerator: React.FC = () => {
   const [description, setDescription] = useState('');
@@ -16,7 +20,7 @@ const ArtGenerator: React.FC = () => {
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [strength, setStrength] = useState(0.5);
-  const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '12:9'];
+  const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
 
   const handleGenerate = async () => {
     if (!description) {
@@ -37,12 +41,11 @@ const ArtGenerator: React.FC = () => {
           toast.error("Please select an aspect ratio.");
           return;
         }
-        console.log(selectedAspectRatio, "aspect ratio")
-        const resolution = '1024x1024';
+        // const resolution = '1024x1024';
         const payload = {
           prompt: description,
           aspect_ratio: selectedAspectRatio,
-          resolution,
+          // resolution,
           output_format: 'jpeg'
         };
         response = await generateImage(payload);
@@ -76,11 +79,13 @@ const ArtGenerator: React.FC = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-
+  const { userId } = useAuth();
+  console.log(userId,"clerk user id");
 
   return (
     <div className="py-4">
       <ToastContainer />
+      <UploadComponent />
       <label className="text-custom-black block">Aspect ratio</label>
       <div className="flex flex-wrap justify-center md:justify-start">
 
@@ -117,10 +122,11 @@ const ArtGenerator: React.FC = () => {
 
       {loading && <div className='flex mt-4 justify-center items-center'> <MoonLoader /></div>}
       {image &&
-        <div className='w-100 flex justify-center'>
-          <div className='relative w-60 h-60 md:w-96 md:h-96'><Image src={image} alt="Generated Art" className="mt-4" fill />
-          </div>
+        <div className='w-full flex justify-center mt-4'>
+        <div className='relative max-w-full w-full min-h-80'>
+          <Image src={image} alt="Generated Art" className="absolute top-0 left-0 w-full h-full object-contain" layout="fill" />
         </div>
+      </div>
       }
     </div>
   );

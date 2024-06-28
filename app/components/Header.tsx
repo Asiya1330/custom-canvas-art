@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { FiMenu } from 'react-icons/fi';
 import { GiIndianPalace } from 'react-icons/gi';
 import SideMenu from './SideMenu';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 const Header: React.FC = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -28,9 +29,20 @@ const Header: React.FC = () => {
 
           </div>
           <div className="flex items-center">
-            <Link href="/login" passHref className="text-white mr-4 hover:underline">
-              Log In
-            </Link>
+            <SignedOut>
+
+              <Link href="/sign-in" passHref className="text-white mr-4 hover:underline">
+                Sign In
+              </Link>
+              <Link href="/sign-up" passHref className="text-white mr-4 hover:underline">
+                Sign Up
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <div className='mr-2'>
+              <UserButton />
+              </div>
+            </SignedIn>
             <FiMenu className="text-white cursor-pointer" size={24} onClick={toggleSideMenu} />
           </div>
         </div>
