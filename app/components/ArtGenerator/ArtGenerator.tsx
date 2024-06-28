@@ -78,6 +78,9 @@ const ArtGenerator: React.FC = () => {
       console.log(event.target.files[0], "changed");
       setSelectedFile(event.target.files[0]);
     }
+    else {
+      setSelectedFile(null);
+    }
   };
 
   const width = 300; // Set a fixed width for the loading box
@@ -94,14 +97,14 @@ const ArtGenerator: React.FC = () => {
         <div className='flex flex-wrap justify-center'>
 
 
-        {aspectRatios.map((ratio) => (
-          <AspectRatioBox
-            key={ratio}
-            aspectRatio={ratio}
-            selected={selectedAspectRatio === ratio}
-            onClick={handleAspectRatioClick}
-          />
-        ))}
+          {aspectRatios.map((ratio) => (
+            <AspectRatioBox
+              key={ratio}
+              aspectRatio={ratio}
+              selected={selectedAspectRatio === ratio}
+              onClick={handleAspectRatioClick}
+            />
+          ))}
         </div>
       </div>
       <ProgressBar strength={strength} setStrength={setStrength} />
@@ -114,6 +117,7 @@ const ArtGenerator: React.FC = () => {
           loading={loading}
           handleFileChange={handleFileChange}
           selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
         />
         <div className="text-right">
           <button
