@@ -5,13 +5,16 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { useAuth } from '@clerk/nextjs';
 import { uploadImageToFirestore } from '@/app/firebase/uploadImage';
+import { ClipLoader } from 'react-spinners';
+import { DocumentData } from 'firebase/firestore';
 
 interface FavoriteImageProps {
   imageFile: Blob;
   description: string;
+  addImage: (newImage: DocumentData) => void;
 }
 
-const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description }) => {
+const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,addImage }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const { userId } = useAuth();
@@ -30,6 +33,8 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description })
       await uploadImageToFirestore(userId, imageFile, description);
       toast.success("Image saved to favorites!");
       setIsFavorite(true);
+      const newImage = { id: new Date().toISOString(), imageUrl: URL.createObjectURL(imageFile), description }; // Adjust this as per your image structure
+      addImage(newImage);
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while saving the image.");
@@ -52,7 +57,11 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description })
         onClick={handleFavoriteClick}
         disabled={loading}
       >
-        {isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart size={20} />}
+        {loading ? (
+          <ClipLoader size={20} color={isFavorite ? 'red' : 'gray'} />
+        ) : (
+          isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart size={20} />
+        )}
       </button>
     </div>
   );

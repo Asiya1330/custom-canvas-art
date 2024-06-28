@@ -41,10 +41,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ loading, handleFileChange, se
                 <div className="my-4 relative">
                 <Image src={preview} alt="Selected File" className="max-w-full h-auto" width={200} height={200} />
                 <button
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
                     onClick={handleRemoveImage}
                 >
-                    <AiOutlineClose size={20} />
+                    <AiOutlineClose size={10} />
                 </button>
             </div>
             )}

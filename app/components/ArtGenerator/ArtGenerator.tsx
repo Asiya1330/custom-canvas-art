@@ -11,9 +11,13 @@ import ImageUpload from './ImageUpload';
 import ProgressBar from './ProgressBar';
 import RectanglesWithArrow from '../RectanglesWithArrow';
 import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
+import { DocumentData } from 'firebase/firestore';
 
+interface ArtGeneratorProps {
+  addImage: (newImage: DocumentData) => void;
+}
 
-const ArtGenerator: React.FC = () => {
+const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -136,7 +140,7 @@ const ArtGenerator: React.FC = () => {
         </div>
       )}
       {imageBlob &&
-        <FavoriteImage imageFile={imageBlob} description={description} />
+        <FavoriteImage imageFile={imageBlob} description={description} addImage={addImage}/>
       }
     </div>
   );
