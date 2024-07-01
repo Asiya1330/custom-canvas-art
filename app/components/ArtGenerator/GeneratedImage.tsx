@@ -47,23 +47,24 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,ad
 
   return (
     <div className='w-full flex justify-center mt-4 relative'>
-      <div className='relative max-w-full w-full min-h-80'>
-        <Image src={imageUrl} alt="Generated Art" className="absolute top-0 left-0 w-full h-full object-contain" layout="fill" />
-      </div>
-      <button
+      <div className='relative max-w-full w-3/4 min-h-80'>
+        <img src={imageUrl} alt="Generated Art" className="object-contain" />
+        <button
         className={`absolute top-2 right-2 ${loading ? 'cursor-not-allowed' : 'cursor-pointer'} 
          ${isFavorite ? 'text-red-500 hover:text-red-700' : 'text-gray-500 hover:text-gray-700'}`}
-
-        onClick={handleFavoriteClick}
-        disabled={loading}
-      >
-        {loading ? (
-          <ClipLoader size={20} color={isFavorite ? 'red' : 'gray'} />
-        ) : (
-          isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart size={20} />
-        )}
-      </button>
-    </div>
+            onClick={handleFavoriteClick}
+            disabled={loading}
+          >
+            {loading ? (
+              <ClipLoader size={20} color={isFavorite ? 'red' : 'black'} />
+            ) : (
+              isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart color='black' size={20} />
+            )}
+          </button>
+      </div>
+      
+        </div>
+    
   );
 };
 

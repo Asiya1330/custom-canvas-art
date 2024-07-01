@@ -7,7 +7,7 @@ export const getHeightFromAspectRatio = (aspectRatio: string, width: number): nu
 export const LoadingOverlay: React.FC<{ width: number; height: number }> = ({ width, height }) => (
   <div
     className="flex items-center justify-center bg-gray-200 bg-opacity-75"
-    style={{ width: `${width}px`, height: `${height}px` }}
+    style={{ width: `${width}px`, height: `${(height-200)}px` }}
   >
     <MoonLoader size={20} color="#000000" />
   </div>
