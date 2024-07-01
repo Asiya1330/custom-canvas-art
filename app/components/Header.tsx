@@ -26,7 +26,7 @@ const Header: React.FC = () => {
             <Link href="/" passHref className='flex items-center'>
               {/* <GiIndianPalace size={"2em"} /> */}
               <Image src="/Icon-Logo.svg" alt="Logo" width={50} height={50} className="mr-2" />
-              <h1 className="ml-2 text-xl font-bold">
+              <h1 className="ml-2 text-xl font-bold hidden md:block">
                 <Image src="/logo.svg" alt="Logo" width={150} height={100} className="mr-4" />
 
               </h1>

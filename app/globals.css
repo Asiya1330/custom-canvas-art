@@ -72,3 +72,7 @@ h6 {
   cursor: ew-resize;
   background: #434343;
 }
+
+.pswp__img {
+  object-fit: contain;
+}

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
 import { useAuth } from "@clerk/nextjs";
 import { fetchUserImages } from "../firebase/fetchImages";
+import Link from "next/link";
 
 const ArtGenerationPage: React.FC = () => {
   const [images, setImages] = useState<DocumentData[]>([]);
@@ -39,10 +40,10 @@ const ArtGenerationPage: React.FC = () => {
           <ArtGenerator addImage={addImage} />
         </div>
         <div className="md:w-2/5 flex flex-col items-center mt-2">
-          <button className="flex items-center px-4 py-2 bg-custom-green text-white rounded-full hover:bg-green-600">
+          <Link href={"/saved-art"} className="flex items-center px-4 py-2 bg-custom-green text-white rounded-full hover:bg-green-600">
             Go to Saved Art
             <FaHeart className="ml-2" />
-          </button>
+          </Link>
           <label className="text-custom-green mt-2">Recent Favourites</label>
 
           <ImagesDisplay images={images} />

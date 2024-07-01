@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { FiX } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
+import { SignedIn } from '@clerk/nextjs';
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -31,6 +32,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
           <li className="p-4 hover:bg-gray-700 cursor-pointer" onClick={() => handleNavigation('/art-generation')}>
             Art Generation
           </li>
+          <SignedIn>
+          <li className="p-4 hover:bg-gray-700 cursor-pointer" onClick={() => handleNavigation('/saved-art')}>
+            Saved Art
+          </li>
+          </SignedIn>
           {/* Add more menu items here */}
         </ul>
       </nav>

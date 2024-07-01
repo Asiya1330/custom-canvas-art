@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <Header />
-          <main className="flex-grow container mx-auto p-4">
+          <main className="flex-grow container mx-auto p-4 min-h-screen">
             <ToastProvider>
               {children}
             </ToastProvider>
