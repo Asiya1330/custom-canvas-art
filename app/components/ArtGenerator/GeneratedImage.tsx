@@ -47,7 +47,7 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,ad
 
   return (
     <div className='w-full flex justify-center mt-4 relative'>
-      <div className='relative max-w-full w-3/4 min-h-80'>
+      <div className='relative max-w-full w-1/2 min-h-80'>
         <img src={imageUrl} alt="Generated Art" className="object-contain" />
         <button
         className={`absolute top-2 right-2 ${loading ? 'cursor-not-allowed' : 'cursor-pointer'} 
