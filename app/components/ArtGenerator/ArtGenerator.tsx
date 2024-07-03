@@ -1,21 +1,22 @@
+// components/ArtGenerator.tsx
 "use client";
 import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
-import RectanglesWithArrow from '../RectanglesWithArrow';
-import AspectRatioBox from './AspectRatioBox';
-import DescriptionInput from './DescriptionInput';
 import FavoriteImage from './GeneratedImage';
-import ImageUpload from './ImageUpload';
-import ProgressBar from './ProgressBar';
+import Tabs from './Tabs/Tabs';
+import TextToImage from './Tabs/TextToImageTab';
+import ImageToImage from './Tabs/ImageToImageTab';
+
 
 interface ArtGeneratorProps {
   addImage: (newImage: DocumentData) => void;
 }
 
 const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
+  const [activeTab, setActiveTab] = useState('text-to-image');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -34,7 +35,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
 
     try {
       let response;
-      if (selectedFile) {
+      if (activeTab === 'image-to-image' && selectedFile) {
         // Call SD3 API
         response = await uploadAndGenerateImage(selectedFile, description, strength);
       } else {
@@ -43,11 +44,9 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           toast.error("Please select an aspect ratio.");
           return;
         }
-        // const resolution = '1024x1024';
         const payload = {
           prompt: description,
           aspect_ratio: selectedAspectRatio,
-          // resolution,
           output_format: 'jpeg'
         };
         response = await generateImage(payload);
@@ -70,17 +69,10 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
     }
   };
 
-  const handleAspectRatioClick = (aspectRatio: string) => {
-    setSelectedAspectRatio(aspectRatio);
-  };
-
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      console.log(event.target.files[0], "changed");
       setSelectedFile(event.target.files[0]);
-    }
-    else {
+    } else {
       setSelectedFile(null);
     }
   };
@@ -88,48 +80,41 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const width = 200; // Set a fixed width for the loading box
   const height = selectedAspectRatio ? getHeightFromAspectRatio(selectedAspectRatio, width) : 0;
 
-
   return (
     <div className="py-4 relative">
-      <label className="text-custom-black block">Aspect ratio</label>
-      <div className="flex flex-wrap justify-center md:justify-start w-fit flex-col">
-        <div className='block'>
-          <RectanglesWithArrow />
-        </div>
-        <div className='flex flex-wrap justify-center'>
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
+      {activeTab === 'text-to-image' && (
+        <TextToImage
+          description={description}
+          setDescription={setDescription}
+          selectedAspectRatio={selectedAspectRatio}
+          setSelectedAspectRatio={setSelectedAspectRatio}
+          aspectRatios={aspectRatios}
+        />
+      )}
 
-          {aspectRatios.map((ratio) => (
-            <AspectRatioBox
-              key={ratio}
-              aspectRatio={ratio}
-              selected={selectedAspectRatio === ratio}
-              onClick={handleAspectRatioClick}
-            />
-          ))}
-        </div>
-      </div>
-      <ProgressBar strength={strength} setStrength={setStrength} />
-      <DescriptionInput
-        description={description}
-        setDescription={setDescription}
-      />
-      <div className='flex justify-center sm:justify-between flex-wrap mt-4 md:items-start'>
-        <ImageUpload
+      {activeTab === 'image-to-image' && (
+        <ImageToImage
+          description={description}
+          setDescription={setDescription}
+          strength={strength}
+          setStrength={setStrength}
           loading={loading}
           handleFileChange={handleFileChange}
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
         />
-        <div className="text-right">
-          <button
-            className={`ml-2 px-4 py-2 text-white rounded-md ${loading ? 'bg-green-500' : 'bg-custom-purple hover:bg-custom-purple-dark'}`}
-            onClick={handleGenerate}
-            disabled={loading}
-          >
-            {loading ? 'Generating...' : 'Generate'}
-          </button>
-        </div>
+      )}
+
+      <div className="text-right mt-4">
+        <button
+          className={`ml-2 px-4 py-2 text-white rounded-md ${loading ? 'bg-green-500' : 'bg-custom-purple hover:bg-custom-purple-dark'}`}
+          onClick={handleGenerate}
+          disabled={loading}
+        >
+          {loading ? 'Generating...' : 'Generate'}
+        </button>
       </div>
 
       {loading && (
@@ -138,7 +123,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
         </div>
       )}
       {imageBlob &&
-        <FavoriteImage imageFile={imageBlob} description={description} addImage={addImage}/>
+        <FavoriteImage imageFile={imageBlob} description={description} addImage={addImage} />
       }
     </div>
   );

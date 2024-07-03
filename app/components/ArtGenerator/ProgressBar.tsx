@@ -16,9 +16,9 @@ const StrengthBar: React.FC<StrengthBarProps> = ({ strength, setStrength }) => {
   };
 
   return (
-    <div className="flex  items-center mt-4 w-full flex-wrap">
+    <div className="flex  items-center flex-wrap justify-between">
       <label className="text-custom-black block mr-2">Strength :</label>
-      <div className="flex items-center my-4 w-full md:w-1/3">
+      <div className="flex items-center my-4 ">
         <input
           type="range"
           min="0"
