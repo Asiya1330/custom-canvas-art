@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
 import { useAuth } from "@clerk/nextjs";
 import { fetchUserImages } from "../firebase/fetchImages";
-import PhotoSwipeLightbox from "photoswipe/lightbox";
-import "photoswipe/style.css";
+import { useRouter } from 'next/navigation';
 import { ClipLoader } from "react-spinners";
 
 const SavedArtPage: React.FC = () => {
     const [images, setImages] = useState<DocumentData[]>([]);
     const { userId } = useAuth();
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
     useEffect(() => {
         const fetchImages = async () => {
             if (!userId) {
@@ -33,22 +33,6 @@ const SavedArtPage: React.FC = () => {
         fetchImages();
     }, [userId]);
 
-    function isPhonePortrait() {
-        return window.matchMedia('(max-width: 600px) and (orientation: portrait)').matches;
-    }
-    useEffect(() => {
-        if (images.length > 0) {
-            const lightbox = new PhotoSwipeLightbox({
-                gallery: '#gallery',
-                children: 'a',
-
-                pswpModule: () => import("photoswipe"),
-            });
-            lightbox.init();
-            return () => lightbox.destroy();
-        }
-    }, [images]);
-
     return (
         <div className="min-h-screen flex justify-center items-start">
             <div className="container mx-auto py-8">
@@ -60,21 +44,17 @@ const SavedArtPage: React.FC = () => {
                 ) : (
                     <div id="gallery" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {images.map((image, index) => (
-                            <a
+                            <div
                                 key={index}
-                                href={image.imageUrl}
-                                data-pswp-width={300}
-                                data-pswp-height={300}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block overflow-hidden rounded-lg shadow-lg object-cover"
+                                onClick={() => router.push(`/product/${image.id}`)}
+                                className="block overflow-hidden rounded-lg shadow-lg cursor-pointer"
                             >
                                 <img
                                     src={image.imageUrl}
                                     alt={image.description}
                                     className="object-cover w-full h-full"
                                 />
-                            </a>
+                            </div>
                         ))}
                     </div>
                 )}
