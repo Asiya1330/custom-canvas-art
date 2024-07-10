@@ -10,9 +10,11 @@ interface TextToImageProps {
   selectedAspectRatio: string | null;
   setSelectedAspectRatio: (aspectRatio: string) => void;
   aspectRatios: string[];
+  seed: number,
+  setSeed: (seed: number) => void;
 }
 
-const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, selectedAspectRatio, setSelectedAspectRatio, aspectRatios }) => {
+const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, selectedAspectRatio, setSelectedAspectRatio, aspectRatios, seed, setSeed }) => {
   return (
     <div>
       <label className="text-custom-black block">Aspect ratio</label>
@@ -29,11 +31,23 @@ const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, 
               onClick={() => setSelectedAspectRatio(ratio)}
             />
           ))}
+
         </div>
       </div>
       <DescriptionInput
         description={description}
         setDescription={setDescription}
+      />
+      <label htmlFor="seed">Seed <span className='text-gray-500'>(Optional)</span>: </label>
+
+      <input
+        type="number"
+        value={seed}
+        onChange={(e) => setSeed(Number(e.target.value))}
+        placeholder="Seed value"
+        className="w-fit mt-2 p-2 border rounded"
+        min={0}
+        max={4294967294}
       />
     </div>
   );

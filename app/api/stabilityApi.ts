@@ -2,11 +2,11 @@ import axios from "axios";
 
 const API_KEY = process.env.NEXT_PUBLIC_STABILITY_API_KEY;
 
-export const generateImage = async (payload: Record<string, string | null>) => {
+export const generateImage = async (payload: Record<string, string | number | null>) => {
   const formData = new FormData();
   Object.entries(payload).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
-      formData.append(key, value as string);
+      formData.append(key, value.toString());
     }
   });
 
@@ -30,6 +30,7 @@ export const uploadAndGenerateImage = async (
   file: File,
   prompt: string,
   strength: number,
+  seed:number 
 ) => {
   const formData = new FormData();
   formData.append("image", file);
@@ -37,6 +38,8 @@ export const uploadAndGenerateImage = async (
   formData.append("output_format", "jpeg");
   formData.append("mode", "image-to-image");
   formData.append("strength", strength.toString());
+  formData.append("seed", seed.toString());
+
 
   const response = await axios.post(
     "https://api.stability.ai/v2beta/stable-image/generate/sd3",

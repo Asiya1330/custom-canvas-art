@@ -24,6 +24,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [strength, setStrength] = useState(0.5);
   const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
+  const [seed, setSeed] = useState(0);
 
   const handleGenerate = async () => {
     if (!description) {
@@ -37,7 +38,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
       let response;
       if (activeTab === 'image-to-image' && selectedFile) {
         // Call SD3 API
-        response = await uploadAndGenerateImage(selectedFile, description, strength);
+        response = await uploadAndGenerateImage(selectedFile, description, strength,seed);
       } else {
         // Call Ultra API
         if (!selectedAspectRatio) {
@@ -47,6 +48,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
         const payload = {
           prompt: description,
           aspect_ratio: selectedAspectRatio,
+          seed: seed,
           output_format: 'jpeg'
         };
         response = await generateImage(payload);
@@ -91,6 +93,8 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           selectedAspectRatio={selectedAspectRatio}
           setSelectedAspectRatio={setSelectedAspectRatio}
           aspectRatios={aspectRatios}
+          seed={seed}
+          setSeed={setSeed}
         />
       )}
 
@@ -104,6 +108,8 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           handleFileChange={handleFileChange}
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
+          seed={seed}
+          setSeed={setSeed}
         />
       )}
 
