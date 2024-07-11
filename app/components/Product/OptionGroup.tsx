@@ -32,7 +32,7 @@ const OptionGroup: React.FC<OptionGroupProps> = ({ optionGroups, selectedItems, 
   const customOption = (props: OptionProps<FlattenedOption, true>) => {
     return (
       <div {...props.innerProps} className="flex items-center space-x-2 p-2 hover:bg-gray-200">
-        <Image src={props.data.imageUrl} alt={props.data.label} width={32} height={32} className="w-8 h-8" />
+        {/* <Image src={props.data.imageUrl} alt={props.data.label} width={32} height={32} className="w-8 h-8" /> */}
         <span>{props.data.label}</span>
         <span className="text-gray-500 text-sm ml-2">({props.data.groupLabel})</span>
       </div>

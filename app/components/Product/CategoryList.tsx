@@ -33,10 +33,26 @@ interface OptionGroupItem {
   optionImageUrl: string;
 }
 
-interface OptionsGroup {
-  optionGroup: string;
-  optionGroupItems: OptionGroupItem[];
-}
+const categoryImageMapping = {
+  "Canvas": '/stretched-canvas/0.75Canvas-1.jpg',
+  "Framed Canvas": '/framed-canvas/Black-Floating-Frame-Canvas-labeled.jpg',
+  // Add other categories and their images as needed
+};
+
+const subCategoryImageMappingCanvas = {
+  101001: "/stretched-canvas/0.75Canvas-1.jpg",
+  101002: "/stretched-canvas/1.25Canvas-1.jpg",
+  101003: "/stretched-canvas/1.50Canvas-1.jpg",
+  101005: "/stretched-canvas/RolledCanvas.jpg",
+  // Add more mappings as needed
+};
+
+const subCategoryImageMappingFramedCanvas = {
+  102001: "/path/to/0.75in-framed-canvas.jpg",
+  102002: "/path/to/1.25in-framed-canvas.jpg",
+  102003: "/path/to/1.50in-framed-canvas.jpg",
+  // Add more mappings as needed
+};
 
 
 const CategoryList = () => {
@@ -57,8 +73,13 @@ const CategoryList = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/lumaprint/categories');
-        console.log("data", response.data)
-        setCategories(response.data);
+        const filteredCategories = response.data.filter((category: Category) =>
+          category.name === "Canvas" || category.name === "Framed Canvas"
+        ).map((category: Category) => ({
+          ...category,
+          imageUrl: categoryImageMapping[category.name as keyof typeof categoryImageMapping]
+        }));
+        setCategories(filteredCategories);
       } catch (error) {
         console.error('Error fetching categories:', error);
       } finally {
@@ -77,8 +98,20 @@ const CategoryList = () => {
 
       try {
         const response = await axios.get(`/api/lumaprint/subcategories?categoryId=${selectedCategory}`);
-        console.log("data", response.data)
-        setSubCategories(response.data);
+        let filteredSubCategories = response.data;
+        if (selectedCategory === 101) { // Assuming 101 is the categoryId for "Canvas"
+          filteredSubCategories = filteredSubCategories.map((subCategory: SubCategory) => ({
+            ...subCategory,
+            imageUrl: subCategoryImageMappingCanvas[subCategory.subcategoryId as keyof typeof subCategoryImageMappingCanvas]
+          }));
+        } else if (selectedCategory === 102) { // Assuming 102 is the categoryId for "Framed Canvas"
+          filteredSubCategories = filteredSubCategories.map((subCategory: SubCategory) => ({
+            ...subCategory,
+            imageUrl: subCategoryImageMappingFramedCanvas[subCategory.subcategoryId as keyof typeof subCategoryImageMappingFramedCanvas]
+          }));
+        }
+  
+        setSubCategories(filteredSubCategories);
       } catch (error) {
         console.error('Error fetching subcategories:', error);
       } finally {
@@ -156,7 +189,7 @@ const CategoryList = () => {
         </div>
       )}
 
-      {selectedSubCategory && (
+      {selectedSubCategory && optionGroups.length > 0 && (
         <div className="relative">
           <h2 className="text-lg font-semibold mb-2">Options</h2>
           <OptionGroup

@@ -39,7 +39,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
       let response;
       if (activeTab === 'image-to-image' && selectedFile) {
         // Call SD3 API
-        response = await uploadAndGenerateImage(selectedFile, description, strength,seed);
+        response = await uploadAndGenerateImage(selectedFile, description, strength,seed,negativePrompt);
       } else {
         // Call Ultra API
         if (!selectedAspectRatio) {
@@ -50,7 +50,8 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           prompt: description,
           aspect_ratio: selectedAspectRatio,
           seed: seed,
-          output_format: 'jpeg'
+          output_format: 'jpeg',
+          negative_prompt:negativePrompt,
         };
         response = await generateImage(payload);
       }

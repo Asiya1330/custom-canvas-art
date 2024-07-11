@@ -1,12 +1,10 @@
 "use client"
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { DocumentData } from 'firebase/firestore';
-import { fetchImage } from '@/app/firebase/fetchImages';
-import ProductImage from '@/app/components/Product/ProductImage';
 import ProductDetails from '@/app/components/Product/ProductDetails';
+import ProductImage from '@/app/components/Product/ProductImage';
+import { fetchImage } from '@/app/firebase/fetchImages';
 import { useAuth } from '@clerk/nextjs';
-import CategoryList from '@/app/components/Product/CategoryList';
+import { DocumentData } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 
 interface ProductPageProps {

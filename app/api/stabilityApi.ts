@@ -30,7 +30,8 @@ export const uploadAndGenerateImage = async (
   file: File,
   prompt: string,
   strength: number,
-  seed:number 
+  seed:number ,
+  negativePrompt?:string
 ) => {
   const formData = new FormData();
   formData.append("image", file);
@@ -39,6 +40,9 @@ export const uploadAndGenerateImage = async (
   formData.append("mode", "image-to-image");
   formData.append("strength", strength.toString());
   formData.append("seed", seed.toString());
+  if(negativePrompt) {
+    formData.append("negative_prompt", negativePrompt);
+  }
 
 
   const response = await axios.post(
