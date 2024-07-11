@@ -20,7 +20,7 @@ const ImageSlide: React.FC<ImageSlideProps> = ({ src, alt, title, isCenter }) =>
     <img
       src={src}
       alt={alt}
-      className={`w-full object-cover ${isCenter ? 'h-[450px] p-2 centered-image-border' : 'h-96'}`}
+      className={`w-full object-cover ${isCenter ? 'h-[500px] p-2 centered-image-border' : 'h-96'}`}
     />
     <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
       <h3 className="text-xl font-bold">{title}</h3>

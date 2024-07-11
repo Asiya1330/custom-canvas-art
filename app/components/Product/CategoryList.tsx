@@ -1,32 +1,63 @@
-// components/CategoryList.tsx
-
 'use client';
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
+import Dropdown from './Dropdown';
+import CategoryItem from './CategoryItem';
+import SubCategoryItem from './SubCategoryItem';
+import OptionGroup from './OptionGroup';
+import { MultiValue } from 'react-select';
 
 interface Category {
   id: number;
   name: string;
+  imageUrl: string;
 }
 
 interface SubCategory {
   id: number;
   name: string;
+  imageUrl: string;
+  maximumHeight: number;
+  maximumWidth: number;
+  minimumHeight: number;
+  minimumWidth: number;
+  requiredDPI: number;
+  subcategoryId: number;
 }
+
+
+interface OptionGroupItem {
+  optionId: number;
+  optionName: string;
+  optionImageUrl: string;
+}
+
+interface OptionsGroup {
+  optionGroup: string;
+  optionGroupItems: OptionGroupItem[];
+}
+
 
 const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null);
+  const [selectedItems, setSelectedItems] = useState<MultiValue<{ value: number; label: string; imageUrl: string; groupLabel: string }>>([]);
   const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
   const [loadingSubCategories, setLoadingSubCategories] = useState<boolean>(false);
+  const [loadingOptions, setLoadingOptions] = useState<boolean>(false);
+  const [showCategories, setShowCategories] = useState<boolean>(false);
+  const [showSubCategories, setShowSubCategories] = useState<boolean>(false);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/lumaprint/categories');
+        console.log("data", response.data)
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -46,6 +77,7 @@ const CategoryList = () => {
 
       try {
         const response = await axios.get(`/api/lumaprint/subcategories?categoryId=${selectedCategory}`);
+        console.log("data", response.data)
         setSubCategories(response.data);
       } catch (error) {
         console.error('Error fetching subcategories:', error);
@@ -57,67 +89,81 @@ const CategoryList = () => {
     fetchSubCategories();
   }, [selectedCategory]);
 
+  useEffect(() => {
+    const fetchOptions = async () => {
+      if (selectedSubCategory === null) return;
+
+      setLoadingOptions(true);
+
+      try {
+        const response = await axios.get(`/api/lumaprint/options?subcategoryId=${selectedSubCategory}`);
+        setOptionGroups(response.data);
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      } finally {
+        setLoadingOptions(false);
+      }
+    };
+
+    fetchOptions();
+  }, [selectedSubCategory]);
+
+  const handleSelectionChange = (selectedOptions: MultiValue<{ value: number; label: string; imageUrl: string; groupLabel: string }>) => {
+    setSelectedItems(selectedOptions);
+    console.log("Selected Items: " + selectedItems);
+  };
+
+
   return (
     <div className="w-full max-w-xs mt-4">
       <h1 className="text-xl font-semibold mb-2">Media</h1>
-      <div className="relative mb-4">
-        {loadingCategories ? (
-          <div className="flex items-center justify-center py-2">
-            <BeatLoader size={20} />
-          </div>
-        ) : (
-          <>
-            <select
-              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              defaultValue=""
-              onChange={(e) => setSelectedCategory(Number(e.target.value))}
-            >
-              <option value="" disabled>
-                Choose Print Media
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M7 10l5 5 5-5H7z" />
-              </svg>
-            </div>
-          </>
-        )}
-      </div>
+      <Dropdown
+        label={selectedCategory ? categories.find(cat => cat.id === selectedCategory)?.name || 'Choose Print Media' : 'Choose Print Media'}
+        loading={loadingCategories}
+        showDropdown={showCategories}
+        toggleDropdown={() => setShowCategories(!showCategories)}
+      >
+        {categories.map((category) => (
+          <CategoryItem
+            key={category.id}
+            id={category.id}
+            name={category.name}
+            imageUrl={category.imageUrl}
+            onClick={() => { setSelectedCategory(category.id); setShowCategories(false); }}
+          />
+        ))}
+      </Dropdown>
+
       {selectedCategory && (
         <div className="relative">
           <h2 className="text-lg font-semibold mb-2">Subcategories</h2>
-          {loadingSubCategories ? (
-            <div className="flex items-center justify-center py-2">
-              <BeatLoader size={20} />
-            </div>
-          ) : (
-            <div className='relative'>
-              <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Choose Print Media sub-category
-                </option>
-                {subCategories.map((subCategory) => (
-                  <option key={subCategory.id} value={subCategory.id}>
-                    {subCategory.name}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M7 10l5 5 5-5H7z" />
-                </svg>
-              </div>
-            </div>
-          )}
+          <Dropdown
+            label={selectedSubCategory ? subCategories.find(sub => sub.subcategoryId === selectedSubCategory)?.name || 'Choose Print Media sub-category' : 'Choose Print Media sub-category'}
+            loading={loadingSubCategories}
+            showDropdown={showSubCategories}
+            toggleDropdown={() => setShowSubCategories(!showSubCategories)}
+          >
+            {subCategories.map((subCategory) => (
+              <SubCategoryItem
+                key={subCategory.subcategoryId}
+                id={subCategory.subcategoryId}
+                name={subCategory.name}
+                imageUrl={subCategory.imageUrl}
+                onClick={() => { setSelectedSubCategory(subCategory.subcategoryId); setShowSubCategories(false); }}
+              />
+            ))}
+          </Dropdown>
+        </div>
+      )}
+
+      {selectedSubCategory && (
+        <div className="relative">
+          <h2 className="text-lg font-semibold mb-2">Options</h2>
+          <OptionGroup
+            optionGroups={optionGroups}
+            selectedItems={selectedItems}
+            handleSelectionChange={handleSelectionChange}
+          />
         </div>
       )}
     </div>

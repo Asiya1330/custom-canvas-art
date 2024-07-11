@@ -42,7 +42,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     }, [userId,params.id]);
 
     if (loading) {
-        return <div><MoonLoader /></div>;
+        return <div><MoonLoader size={20}/></div>;
     }
 
     if (!image) {
