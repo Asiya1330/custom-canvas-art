@@ -81,3 +81,12 @@ h6 {
   display: flex;
   align-items: center;
 }
+
+.centered-image-border {
+  border-style: solid !important;
+  border-width: 15px !important;
+  border-top-color: rgba(0, 0, 0, 0.8) !important; /* lighten(#000, 20%) */
+  border-right-color: rgba(0, 0, 0, 1) !important; /* lighten(#000, 0%) */
+  border-bottom-color: rgba(0, 0, 0, 0.8) !important; /* lighten(#000, 20%) */
+  border-left-color: rgba(0, 0, 0, 1) !important; /* lighten(#000, 0%) */
+}

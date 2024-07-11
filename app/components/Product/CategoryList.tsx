@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MoonLoader } from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
 
 interface Category {
   id: number;
@@ -63,7 +63,7 @@ const CategoryList = () => {
       <div className="relative mb-4">
         {loadingCategories ? (
           <div className="flex items-center justify-center py-2">
-            <MoonLoader size={20} />
+            <BeatLoader size={20} />
           </div>
         ) : (
           <>
@@ -94,7 +94,7 @@ const CategoryList = () => {
           <h2 className="text-lg font-semibold mb-2">Subcategories</h2>
           {loadingSubCategories ? (
             <div className="flex items-center justify-center py-2">
-              <MoonLoader size={20} />
+              <BeatLoader size={20} />
             </div>
           ) : (
             <div className='relative'>

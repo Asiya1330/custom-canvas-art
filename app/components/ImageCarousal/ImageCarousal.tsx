@@ -4,7 +4,7 @@ import CarouselWrapper from './CarousalWrapper';
 
 const ImageCarousel: React.FC = () => {
   return (
-    <div>
+    <div className='h-[470px]'>
       <CarouselWrapper />
     </div>
   );

@@ -25,6 +25,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [strength, setStrength] = useState(0.5);
   const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
   const [seed, setSeed] = useState(0);
+  const [negativePrompt, setNegativePrompt] = useState('');
 
   const handleGenerate = async () => {
     if (!description) {
@@ -95,7 +96,9 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           aspectRatios={aspectRatios}
           seed={seed}
           setSeed={setSeed}
-        />
+          negativePrompt={negativePrompt}
+          setNegativePrompt={setNegativePrompt}
+          />
       )}
 
       {activeTab === 'image-to-image' && (
@@ -110,6 +113,8 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           setSelectedFile={setSelectedFile}
           seed={seed}
           setSeed={setSeed}
+          negativePrompt={negativePrompt}
+          setNegativePrompt={setNegativePrompt}
         />
       )}
 

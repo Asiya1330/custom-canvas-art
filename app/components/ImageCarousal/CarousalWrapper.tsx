@@ -31,16 +31,58 @@ const CarouselWrapper: React.FC = () => {
   }, []);
 
   const slides = [
-    { src: '/carousal-1.jpg', alt: 'Image 1', title: 'Content Below Image 1', description: 'Description or additional text here...' },
-    { src: '/carousal-2.jpeg', alt: 'Image 2', title: 'Content Below Image 2', description: 'Description or additional text here...' },
-    { src: '/carousal-3.jpg', alt: 'Image 3', title: 'Content Below Image 3', description: 'Description or additional text here...' },
-    { src: '/carousal-4.jpg', alt: 'Image 4', title: 'Content Below Image 4', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
-    { src: '/carousal-5.png', alt: 'Image 5', title: 'Content Below Image 5', description: 'Description or additional text here...' },
+    {
+      src: '/home/bauhaus print 2-3.png',
+      alt: 'bauhaus print 2-3',
+      title: 'bauhaus print 2-3',
+    },
+    {
+      src: '/home/oil painting, jackson pollock.jpeg',
+      alt: 'oil painting, jackson pollock',
+      title: 'oil painting, jackson pollock',
+    },
+    {
+      src: '/home/la calaca dia de los muertos poster art.jpeg',
+      alt: 'la calaca dia de los muertos poster art',
+      title: 'la calaca dia de los muertos poster art',
+    },
+    {
+      src: '/home/propaganda poster, dia de los muertos, a dancing skeleton, _dia de los muertos_.jpeg',
+      alt: 'propaganda poster, dia de los muertos, a dancing skeleton, _dia de los muertos',
+      title: 'propaganda poster, dia de los muertos, a dancing skeleton, _dia de los muertos',
+    },
+    {
+      src: '/home/mona lisa eating ice cream, oil painting, craquelure, 16th century.jpg',
+      alt: 'mona lisa eating ice cream, oil painting, craquelure, 16th century',
+      title: 'mona lisa eating ice cream, oil painting, craquelure, 16th century',
+    },
+    {
+      src: '/home/1950s tourism poster for san diego.jpeg',
+      alt: '1950s tourism poster for san diego',
+      title: '1950s tourism poster for san diego',
+    },
+    {
+      src: '/home/1950s travel tourism propaganda poster for Monument Valley National Park.jpeg',
+      alt: '1950s travel tourism propaganda poster for Monument Valley National Park',
+      title: '1950s travel tourism propaganda poster for Monument Valley National Park',
+    },
+    {
+      src: '/home/art print on canvas in the style of Zarina Hashmi.jpeg',
+      alt: 'art print on canvas in the style of Zarina Hashmi',
+      title: 'art print on canvas in the style of Zarina Hashmi',
+    },
+    {
+      src: '/home/la calaca dia de los muertos poster art washed out color.jpeg',
+      alt: 'la calaca dia de los muertos poster art washed out color',
+      title: 'la calaca dia de los muertos poster art washed out color',
+    },
+
+    {
+      src: '/home/travel tourism propaganda poster for Monument Valley National Park washed out color, _Visit Monument Valley_ National Parks Service logo.jpeg',
+      alt: 'travel tourism propaganda poster for Monument Valley National Park washed out color',
+      title: 'travel tourism propaganda poster for Monument Valley National Park washed out color',
+    },
+
 
   ];
 
@@ -63,14 +105,12 @@ const CarouselWrapper: React.FC = () => {
     >
       {slides.map((slide, index) => {
         const isCenter = index === currentIndex % slides.length; // Ensure index wraps around
-        console.log("isCenter: " + isCenter);
         return (
           <ImageSlide
             key={index}
             src={slide.src}
             alt={slide.alt}
             title={slide.title}
-            description={slide.description}
             isCenter={isCenter}
           />
         );
