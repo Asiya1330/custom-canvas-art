@@ -2,6 +2,7 @@
 import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import ImageCarousel from "./components/ImageCarousal/ImageCarousal";
+import ThreeImageDisplay from "./components/ThreeImagesDisplay";
 
 export default function Home() {
   return (
@@ -21,7 +22,8 @@ export default function Home() {
 
         </div>
       </section>
-      <ImageCarousel />
+      {/* <ImageCarousel /> */}
+      <ThreeImageDisplay />
     </>
   );
 }

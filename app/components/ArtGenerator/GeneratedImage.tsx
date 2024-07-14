@@ -11,10 +11,13 @@ import { DocumentData } from 'firebase/firestore';
 interface FavoriteImageProps {
   imageFile: Blob;
   description: string;
+  seed: number;
+  negativePrompt: string;
+  aspectRatio: string;
   addImage: (newImage: DocumentData) => void;
 }
 
-const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,addImage }) => {
+const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description, seed, negativePrompt, aspectRatio, addImage }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const { userId } = useAuth();
@@ -30,10 +33,10 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,ad
     }
     setLoading(true);
     try {
-      await uploadImageToFirestore(userId, imageFile, description);
+      await uploadImageToFirestore(userId, imageFile, description, seed, negativePrompt, aspectRatio);
       toast.success("Image saved to favorites!");
       setIsFavorite(true);
-      const newImage = { id: new Date().toISOString(), imageUrl: URL.createObjectURL(imageFile), description }; // Adjust this as per your image structure
+      const newImage = { id: new Date().toISOString(), imageUrl: URL.createObjectURL(imageFile), description, seed, negativePrompt, aspectRatio };
       addImage(newImage);
     } catch (error) {
       console.error(error);
@@ -42,7 +45,6 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,ad
       setLoading(false);
     }
   };
-
   const imageUrl = URL.createObjectURL(imageFile);
 
   return (
@@ -50,21 +52,21 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description,ad
       <div className='relative max-w-full w-1/2 min-h-80'>
         <img src={imageUrl} alt="Generated Art" className="object-contain" />
         <button
-        className={`absolute top-2 right-2 ${loading ? 'cursor-not-allowed' : 'cursor-pointer'} 
+          className={`absolute top-2 right-2 ${loading ? 'cursor-not-allowed' : 'cursor-pointer'} 
          ${isFavorite ? 'text-red-500 hover:text-red-700' : 'text-gray-500 hover:text-gray-700'}`}
-            onClick={handleFavoriteClick}
-            disabled={loading}
-          >
-            {loading ? (
-              <ClipLoader size={20} color={isFavorite ? 'red' : 'black'} />
-            ) : (
-              isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart color='black' size={20} />
-            )}
-          </button>
+          onClick={handleFavoriteClick}
+          disabled={loading}
+        >
+          {loading ? (
+            <ClipLoader size={20} color={isFavorite ? 'red' : 'black'} />
+          ) : (
+            isFavorite ? <AiFillHeart size={20} /> : <AiOutlineHeart color='black' size={20} />
+          )}
+        </button>
       </div>
-      
-        </div>
-    
+
+    </div>
+
   );
 };
 

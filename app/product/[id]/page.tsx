@@ -56,9 +56,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         company: 'ABC Company',
         price: 25,
         description: image.description ?? 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae exercitationem porro saepe ea harum corrupti vero id laudantium enim, libero blanditiis expedita cupiditate a est.',
-        versions: ['Version 1', 'Version 2'],
         quantity: 1,
-        discount: '',
+        seed:image.seed,
+        negativePrompt: image.negativePrompt,
+        aspectRatio: image.aspectRatio,
+        
     };
 
     return (
