@@ -3,6 +3,7 @@ import React from 'react';
 import DescriptionInput from '../DescriptionInput';
 import AspectRatioBox from '../AspectRatioBox';
 import RectanglesWithArrow from '../../RectanglesWithArrow';
+import AspectRatioSelector from '../AspectRatioSelector';
 
 interface TextToImageProps {
   description: string;
@@ -19,6 +20,7 @@ interface TextToImageProps {
 const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, selectedAspectRatio, setSelectedAspectRatio, aspectRatios, seed, setSeed, negativePrompt, setNegativePrompt }) => {
   return (
     <div>
+      <AspectRatioSelector />
       <label className="text-custom-black block">Aspect ratio</label>
       <div className="flex flex-wrap justify-center md:justify-start w-fit flex-col">
         <div className='block'>
