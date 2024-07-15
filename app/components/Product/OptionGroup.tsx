@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import React from 'react';
-import Select, { MultiValue, ActionMeta, OptionProps } from 'react-select';
+import Select, { SingleValue, ActionMeta, OptionProps } from 'react-select';
 
 interface OptionGroupItem {
   optionId: number;
   optionName: string;
-  optionImageUrl: string; // Add image URL to the item interface
+  optionImageUrl: string;
 }
 
 interface OptionGroup {
@@ -24,17 +24,16 @@ interface FlattenedOption {
 
 interface OptionGroupProps {
   optionGroups: OptionGroup[];
-  selectedItems: MultiValue<FlattenedOption>;
-  handleSelectionChange: (selectedOptions: MultiValue<FlattenedOption>, actionMeta: ActionMeta<FlattenedOption>) => void;
+  selectedItems: FlattenedOption[];
+  handleSelectionChange: (selectedOptions: SingleValue<FlattenedOption>, actionMeta: ActionMeta<FlattenedOption>) => void;
 }
 
 const OptionGroup: React.FC<OptionGroupProps> = ({ optionGroups, selectedItems, handleSelectionChange }) => {
-  const customOption = (props: OptionProps<FlattenedOption, true>) => {
+  const customOption = (props: OptionProps<FlattenedOption, false>) => {
     return (
       <div {...props.innerProps} className="flex items-center space-x-2 p-2 hover:bg-gray-200">
-        {/* <Image src={props.data.imageUrl} alt={props.data.label} width={32} height={32} className="w-8 h-8" /> */}
         <span>{props.data.label}</span>
-        <span className="text-gray-500 text-sm ml-2">({props.data.groupLabel})</span>
+        {/* <span className="text-gray-500 text-sm ml-2">({props.data.groupLabel})</span> */}
       </div>
     );
   };
@@ -50,25 +49,29 @@ const OptionGroup: React.FC<OptionGroupProps> = ({ optionGroups, selectedItems, 
 
   return (
     <div className="mb-4">
-      <Select<FlattenedOption, true>
-        isMulti
-        options={flattenedOptions}
-        value={selectedItems}
-        onChange={(selectedOptions, actionMeta) => handleSelectionChange(selectedOptions as MultiValue<FlattenedOption>, actionMeta)}
-        components={{ Option: customOption }}
-        styles={{
-          option: (provided) => ({
-            ...provided,
-            display: 'flex',
-            alignItems: 'center',
-          }),
-          multiValueLabel: (provided) => ({
-            ...provided,
-            display: 'flex',
-            alignItems: 'center',
-          }),
-        }}
-      />
+      {optionGroups.map(group => (
+        <div key={group.optionGroup}>
+          <h4 className="font-semibold mt-2 text-sm">{group.optionGroup}</h4>
+          <Select<FlattenedOption, false>
+            options={flattenedOptions.filter(option => option.groupLabel === group.optionGroup)}
+            value={selectedItems.find(item => item.groupLabel === group.optionGroup) || null}
+            onChange={(selectedOption, actionMeta) => handleSelectionChange(selectedOption, actionMeta)}
+            components={{ Option: customOption }}
+            styles={{
+              option: (provided) => ({
+                ...provided,
+                display: 'flex',
+                alignItems: 'center',
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                display: 'flex',
+                alignItems: 'center',
+              }),
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 };

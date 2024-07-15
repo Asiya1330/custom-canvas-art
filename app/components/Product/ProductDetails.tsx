@@ -35,9 +35,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                             </div>
                         </div>
                     </div>
-                    <p className="text-gray-500"><strong>Description: </strong>{product.description}</p>
-                    <p className="text-gray-500"><strong>Aspect Ratio:</strong> {product.aspectRatio}</p>
-                    <p className="text-gray-500"><strong>Seed:</strong> {product.seed}</p>
+                    <p className="text-gray-500"><strong className='text-gray-800'>Description: </strong>{product.description}</p>
+                    <p className="text-gray-500"><strong className='text-gray-800'>Aspect Ratio:</strong> {product.aspectRatio}</p>
+                    <p className="text-gray-500"><strong className='text-gray-800'>Seed:</strong> {product.seed}</p>
                     {product.negativePrompt && (
                         <p className="text-gray-500"><strong>Negative Prompt:</strong> {product.negativePrompt}</p>
                     )}
@@ -55,18 +55,19 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                 <div>
                     <CategoryList />
                     <div className="flex py-4 space-x-4">
-                        <div className="relative">
-                            <div className="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold">
-                                Qty
-                            </div>
+                        <div className="flex items-center space-x-2">
+                            <h2 className="text-lg font-semibold mb-2">
+                                Qunatity:
+                            </h2>
                             <input
                                 type="number"
-                                className="cursor-pointer appearance-none rounded-xl border border-gray-200 h-14 flex items-end pb-1"
+                                className="cursor-pointer border flex items-end pl-1"
                                 min="1"
                                 max="100"
                                 defaultValue="1"
                             />
                         </div>
+
                     </div>
                     <div className="flex py-4 space-x-4">
                         <button

@@ -6,7 +6,8 @@ import Dropdown from './Dropdown';
 import CategoryItem from './CategoryItem';
 import SubCategoryItem from './SubCategoryItem';
 import OptionGroup from './OptionGroup';
-import { MultiValue } from 'react-select';
+import { ActionMeta, MultiValue, SingleValue } from 'react-select';
+import { BeatLoader } from 'react-spinners';
 
 interface Category {
   id: number;
@@ -25,7 +26,12 @@ interface SubCategory {
   requiredDPI: number;
   subcategoryId: number;
 }
-
+interface FlattenedOption {
+  value: number;
+  label: string;
+  imageUrl: string;
+  groupLabel: string;
+}
 
 interface OptionGroupItem {
   optionId: number;
@@ -61,7 +67,7 @@ const CategoryList = () => {
   const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(null);
-  const [selectedItems, setSelectedItems] = useState<MultiValue<{ value: number; label: string; imageUrl: string; groupLabel: string }>>([]);
+  const [selectedItems, setSelectedItems] = useState<FlattenedOption[]>([]);
   const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
   const [loadingSubCategories, setLoadingSubCategories] = useState<boolean>(false);
   const [loadingOptions, setLoadingOptions] = useState<boolean>(false);
@@ -110,7 +116,7 @@ const CategoryList = () => {
             imageUrl: subCategoryImageMappingFramedCanvas[subCategory.subcategoryId as keyof typeof subCategoryImageMappingFramedCanvas]
           }));
         }
-  
+
         setSubCategories(filteredSubCategories);
       } catch (error) {
         console.error('Error fetching subcategories:', error);
@@ -141,11 +147,16 @@ const CategoryList = () => {
     fetchOptions();
   }, [selectedSubCategory]);
 
-  const handleSelectionChange = (selectedOptions: MultiValue<{ value: number; label: string; imageUrl: string; groupLabel: string }>) => {
-    setSelectedItems(selectedOptions);
-    console.log("Selected Items: " + selectedItems);
-  };
+  const handleSelectionChange = (selectedOption: SingleValue<FlattenedOption>, actionMeta: ActionMeta<FlattenedOption>) => {
+    if (!selectedOption) return;
 
+    // Replace the item in selectedItems that has the same groupLabel with the new selectedOption
+    setSelectedItems(prevSelectedItems => {
+      const updatedItems = prevSelectedItems.filter(item => item.groupLabel !== selectedOption.groupLabel);
+      updatedItems.push(selectedOption);
+      return updatedItems;
+    });
+  };
 
   return (
     <div className="w-full max-w-xs mt-4">
@@ -192,11 +203,19 @@ const CategoryList = () => {
       {selectedSubCategory && optionGroups.length > 0 && (
         <div className="relative">
           <h2 className="text-lg font-semibold mb-2">Options</h2>
-          <OptionGroup
-            optionGroups={optionGroups}
-            selectedItems={selectedItems}
-            handleSelectionChange={handleSelectionChange}
-          />
+          {loadingOptions ? (
+
+            <div className="flex items-center justify-center py-2">
+              <BeatLoader size={20} />
+            </div>) : (
+            <OptionGroup
+              optionGroups={optionGroups}
+              selectedItems={selectedItems}
+              handleSelectionChange={handleSelectionChange}
+            />
+          )
+          }
+
         </div>
       )}
     </div>
