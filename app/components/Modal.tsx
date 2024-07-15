@@ -41,6 +41,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, image, onSave }) => {
                     />
                 </div>
                 <div className="mb-4 flex items-center">
+                    <label className="block font-bold">Prompt: </label>
+                    <p> {image.description}</p>
+                </div>
+                <div className="mb-4 flex items-center">
                     <label className="block font-bold">Aspect Ratio: </label>
                     <p>{image.aspectRatio}</p>
                 </div>
