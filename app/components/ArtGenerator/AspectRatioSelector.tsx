@@ -17,9 +17,9 @@ const AspectRatioSelector = () => {
   };
 
   return (
-    <div className="flex space-x-4 justify-between items-center h-24">
+    <div className="flex space-x-4 items-center h-24">
       <label htmlFor="aspect-ratio" className="font-medium text-gray-700">
-        Select Aspect Ratio
+        Select Aspect Ratio: 
       </label>
       <input
         type="range"
@@ -30,11 +30,11 @@ const AspectRatioSelector = () => {
         onChange={handleChange}
         className="w-1/3 !mt-0"
       />
-      <div className="text-center">
+      <div className="text-center mx-2 w-6">
         {aspectRatios[selectedIndex]}
       </div>
       <div className="w-9 relative bg-gray-200 p-1">
-        <div className="inset-0 w-full  border border-gray-900 rounded-md"
+        <div className="inset-0 w-full  border-2 border-gray-900 "
           style={getAspectRatioStyles(aspectRatios[selectedIndex])}
         >
             
