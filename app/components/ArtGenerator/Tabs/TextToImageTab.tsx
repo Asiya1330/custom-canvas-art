@@ -20,8 +20,8 @@ interface TextToImageProps {
 const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, selectedAspectRatio, setSelectedAspectRatio, aspectRatios, seed, setSeed, negativePrompt, setNegativePrompt }) => {
   return (
     <div>
-      <AspectRatioSelector />
-      <label className="text-custom-black block">Aspect ratio</label>
+      <AspectRatioSelector  onAspectRatioChange={setSelectedAspectRatio}/>
+      {/* <label className="text-custom-black block">Aspect ratio</label>
       <div className="flex flex-wrap justify-center md:justify-start w-fit flex-col">
         <div className='block'>
           <RectanglesWithArrow />
@@ -37,14 +37,14 @@ const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, 
           ))}
 
         </div>
-      </div>
+      </div> */}
       <DescriptionInput
         description={description}
         setDescription={setDescription}
       />
       <div className="flex flex-wrap mt-4">
         <div className="w-1/2 pr-2">
-          <label htmlFor="seed">Seed <span className='text-gray-500'>(Optional)</span>: </label>
+          <label htmlFor="seed">Seed <small className='text-gray-500'>(Optional)</small>: </label>
           <input
             type="number"
             value={seed}
@@ -56,7 +56,7 @@ const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, 
           />
         </div>
         <div className="w-1/2 pl-2">
-          <label htmlFor="negativePrompt">Negative Prompt<span className='text-gray-500'>(Optional)</span>: </label>
+          <label htmlFor="negativePrompt">Negative Prompt <small className='text-gray-500'>(Optional)</small>: </label>
           <input
             type='text'
             value={negativePrompt}

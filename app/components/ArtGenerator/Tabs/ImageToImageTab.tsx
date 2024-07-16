@@ -30,7 +30,7 @@ const ImageToImage: React.FC<ImageToImageProps> = ({ description, setDescription
             />
             <div className="flex flex-wrap mt-4">
                 <div className="w-1/2 pr-2">
-                    <label htmlFor="seed">Seed <span className='text-gray-500'>(Optional)</span>: </label>
+                    <label htmlFor="seed">Seed <small className='text-gray-500 text-sm'>(Optional)</small>: </label>
                     <input
                         type="number"
                         value={seed}
@@ -42,7 +42,7 @@ const ImageToImage: React.FC<ImageToImageProps> = ({ description, setDescription
                     />
                 </div>
                 <div className="w-1/2 pl-2">
-                    <label htmlFor="negativePrompt">Negative Prompt <span className='text-gray-500'>(Optional)</span>: </label>
+                    <label htmlFor="negativePrompt">Negative Prompt <small className='text-gray-500 text-sm'>(Optional)</small>: </label>
                     <input
                         type='text'
                         value={negativePrompt}

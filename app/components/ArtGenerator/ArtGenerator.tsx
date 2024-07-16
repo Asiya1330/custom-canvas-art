@@ -20,13 +20,13 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>('1:1');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [strength, setStrength] = useState(0.5);
   const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
   const [seed, setSeed] = useState(0);
   const [negativePrompt, setNegativePrompt] = useState('');
-
+  console.log("selected ratio", selectedAspectRatio)
   const handleGenerate = async () => {
     if (!description) {
       toast.error("Please add a prompt.");

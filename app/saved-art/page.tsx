@@ -83,7 +83,7 @@ const SavedArtPage: React.FC = () => {
                                     className="object-cover w-full h-full"
                                 />
                                 <div className="absolute inset-0 bg-gray-800 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex justify-end p-2 space-x-2">
-                                <MdModeEditOutline
+                                    <MdModeEditOutline
                                         className="w-7 h-7 text-white bg-blue-500 p-1 rounded-full"
                                         onClick={() => handleEditClick(image)}
                                     />
@@ -91,6 +91,9 @@ const SavedArtPage: React.FC = () => {
                                         className="w-7 h-7 text-white bg-green-500 p-1 rounded-full"
                                         onClick={() => handleViewClick(image.id)}
                                     />
+                                </div>
+                                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 text-white p-2 text-center">
+                                    {image.description}
                                 </div>
                             </div>
                         ))}
