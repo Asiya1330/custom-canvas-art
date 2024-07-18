@@ -1,6 +1,7 @@
 "use client";
 import { FC, useState } from 'react';
 import CategoryList from './CategoryList';
+import SizesDropdown from '../Sizes';
 
 interface ProductDetailsProps {
     product: any;
@@ -41,10 +42,11 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                     {product.negativePrompt && (
                         <p className="text-gray-500"><strong>Negative Prompt:</strong> {product.negativePrompt}</p>
                     )}
+                    <SizesDropdown />
                     <div className="flex py-4 space-x-4">
                         <button
                             type="button"
-                            className="h-14 px-6 py-2 font-semibold bg-custom-purple hover:bg-purple-500 text-white"
+                            className="px-6 py-2 font-semibold bg-custom-purple hover:bg-purple-500 text-white"
                             onClick={handleNextStep}
                         >
                             Next
@@ -72,14 +74,14 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                     <div className="flex py-4 space-x-4">
                         <button
                             type="button"
-                            className="h-14 px-6 py-2 font-semibold bg-gray-400 hover:bg-gray-500 text-white"
+                            className="px-6 py-2 font-semibold bg-gray-400 hover:bg-gray-500 text-white"
                             onClick={handleBackStep}
                         >
                             Back
                         </button>
                         <button
                             type="button"
-                            className="h-14 px-6 py-2 font-semibold bg-custom-purple hover:bg-purple-500 text-white"
+                            className="px-6 py-2 font-semibold bg-custom-purple hover:bg-purple-500 text-white"
                         >
                             Add to Cart
                         </button>

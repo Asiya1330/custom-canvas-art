@@ -10,7 +10,6 @@ export async function GET() {
   }
   const authString = Buffer.from(`${LUMAPRINT_API_KEY}:${LUMAPRINT_API_SECRET}`).toString('base64');
   try {
-  console.log("API credentials are set in the environment variables",authString);
 
     const response = await axios.get('https://us.api-sandbox.lumaprints.com/api/v1/products/categories', {
       headers: {

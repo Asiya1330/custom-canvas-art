@@ -22,7 +22,7 @@ const ThreeImageDisplay: React.FC = () => {
     ];
 
     return (
-        <div className="flex justify-center items-center space-x-8">
+        <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-8 space-y-4 sm:space-y-0">
             {slides.map((slide, index) => {
                 const isCenter = index === 1; // The middle image
                 return (
