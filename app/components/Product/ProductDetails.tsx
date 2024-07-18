@@ -42,7 +42,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                     {product.negativePrompt && (
                         <p className="text-gray-500"><strong>Negative Prompt:</strong> {product.negativePrompt}</p>
                     )}
-                    <SizesDropdown />
+                    {/* <SizesDropdown /> */}
                     <div className="flex py-4 space-x-4">
                         <button
                             type="button"
