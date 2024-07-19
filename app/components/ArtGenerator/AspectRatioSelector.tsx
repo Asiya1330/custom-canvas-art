@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const aspectRatios = ['9:21', '9:16', '2:3', '4:5', '1:1', '5:4', '3:2', '16:9', '21:9'];
 
@@ -18,8 +18,13 @@ const AspectRatioSelector: React.FC<AspectRatioSelectorProps> = ({ onAspectRatio
 
   const getAspectRatioStyles = (aspectRatio: string) => {
     const [width, height] = aspectRatio.split(':').map(Number);
+    const maxWidth = 50; // Maximum width for the aspect ratio container
+    const maxHeight = 50; // Maximum height for the aspect ratio container
+    const ratio = Math.min(maxWidth / width, maxHeight / height);
+
     return {
-      paddingBottom: `${(height / width) * 100}%`,
+      width: `${width * ratio}px`,
+      height: `${height * ratio}px`,
     };
   };
 
@@ -76,15 +81,12 @@ const AspectRatioSelector: React.FC<AspectRatioSelectorProps> = ({ onAspectRatio
           />
         </div>
         <div className='flex items-start md:items-center md:mt-0 my-4'>
-
           <div className="text-center mx-8 w-6">
             {aspectRatios[selectedIndex]}
           </div>
-          <div className="w-12 relative bg-gray-200 p-1">
-            <div className="inset-0 w-full border-2 border-gray-900 rounded-md bg-white"
-              style={getAspectRatioStyles(aspectRatios[selectedIndex])}
-            ></div>
-          </div>
+          <div className="relative border-2 border-gray-900 rounded-sm bg-white"
+            style={getAspectRatioStyles(aspectRatios[selectedIndex])}
+          ></div>
         </div>
       </div>
     </div>

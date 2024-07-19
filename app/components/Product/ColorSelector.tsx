@@ -2,7 +2,7 @@
 
 'use client';
 
-import { colors } from '@/app/utils/colors';
+import { colors } from '@/app/utils/constants';
 import { useState } from 'react';
 
 interface ColorSelectorProps {

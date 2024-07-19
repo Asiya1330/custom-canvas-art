@@ -3,11 +3,17 @@ import { useAuth } from "@clerk/nextjs";
 import { DocumentData } from "firebase/firestore";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import { FaEye } from 'react-icons/fa';
-import { MdModeEditOutline } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
-import Modal from "../components/Modal";
+import { toast } from "react-toastify";
+import ConfirmModal from "../components/ConfirmModal";
+import ImageCard from "../components/ImageCard";
+import { deleteUserImage } from "../firebase/deleteImage";
 import { fetchUserImages } from "../firebase/fetchImages";
+import EditImageModalContent from "../components/Modal";
+
+import Modal from "react-modal";
+import { updateUserImage } from "../firebase/updateImage";
+
 const SavedArtPage: React.FC = () => {
     const [images, setImages] = useState<DocumentData[]>([]);
     const { userId } = useAuth();
@@ -15,6 +21,8 @@ const SavedArtPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<DocumentData | null>(null);
     const router = useRouter();
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [imageToDelete, setImageToDelete] = useState<{ id: string, url: string } | null>(null);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -41,8 +49,25 @@ const SavedArtPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleViewClick = (imageId: string) => {
-        router.push(`/product/${imageId}`);
+    const handleDeleteClick = (imageId: string, imageUrl: string) => {
+        setImageToDelete({ id: imageId, url: imageUrl });
+        setIsConfirmModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!userId || !imageToDelete) return;
+
+        try {
+            await deleteUserImage(userId, imageToDelete.id, imageToDelete.url);
+            toast.success("Image Deleted Successfully");
+            setImages((prevImages) => prevImages.filter((img) => img.id !== imageToDelete.id));
+        } catch (error) {
+            toast.error("Error deleting Image. Please try again");
+            console.error("Error deleting image:", error);
+        } finally {
+            setIsConfirmModalOpen(false);
+            setImageToDelete(null);
+        }
     };
 
     const closeModal = () => {
@@ -50,17 +75,29 @@ const SavedArtPage: React.FC = () => {
         setSelectedImage(null);
     };
 
-    const handleSave = (name: string, description: string) => {
-        if (selectedImage) {
-            setImages((prevImages) =>
-                prevImages.map((img) =>
-                    img.id === selectedImage.id
-                        ? { ...img, name, description }
-                        : img
-                )
-            );
+    const handleSave = async (name: string, image_description: string) => {
+        if (selectedImage && userId) {
+            try {
+                await updateUserImage(userId, selectedImage.id, { name, image_description });
+                setImages((prevImages) =>
+                    prevImages.map((img) =>
+                        img.id === selectedImage.id
+                            ? { ...img, name, image_description }
+                            : img
+                    )
+                );
+                toast.success("Image Updated Successfully");
+            } catch (error) {
+                toast.error("Error updating Image. Please try again");
+                console.error("Error updating image:", error);
+            } finally {
+                closeModal();
+            }
+        } else {
+            toast.error("User ID is missing or invalid");
         }
     };
+
 
     return (
         <div className="min-h-screen flex justify-center items-start">
@@ -73,33 +110,33 @@ const SavedArtPage: React.FC = () => {
                 ) : (
                     <div id="gallery" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {images.map((image, index) => (
-                            <div
-                                key={index}
-                                className="relative block overflow-hidden rounded-lg shadow-lg cursor-pointer group h-96"
-                            >
-                                <img
-                                    src={image.imageUrl}
-                                    alt={image.description}
-                                    className="object-cover w-full h-full"
-                                />
-                                <div className="absolute inset-0 bg-gray-800 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex justify-end p-2 space-x-2">
-                                    <MdModeEditOutline
-                                        className="w-7 h-7 text-white bg-blue-500 p-1 rounded-full"
-                                        onClick={() => handleEditClick(image)}
-                                    />
-                                    <FaEye
-                                        className="w-7 h-7 text-white bg-green-500 p-1 rounded-full"
-                                        onClick={() => handleViewClick(image.id)}
-                                    />
-                                </div>
-                                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 text-white p-2 text-center">
-                                    {image.description}
-                                </div>
-                            </div>
+                            <ImageCard
+                                key={image.id}
+                                image={image}
+                                onEdit={handleEditClick}
+                                onDelete={(imageId) => handleDeleteClick(imageId, image.imageUrl)}
+                            />
                         ))}
                     </div>
                 )}
-                <Modal isOpen={isModalOpen} onClose={closeModal} image={selectedImage} onSave={handleSave} />
+                <Modal
+                    isOpen={isModalOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="Edit Image"
+                    className="bg-white p-6 rounded-lg shadow-lg"
+                    overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                >
+                    <EditImageModalContent
+                        image={selectedImage}
+                        onSave={handleSave}
+                        onClose={closeModal}
+                    />
+                </Modal>
+                <ConfirmModal
+                    isOpen={isConfirmModalOpen}
+                    onClose={() => setIsConfirmModalOpen(false)}
+                    onConfirm={confirmDelete}
+                />
             </div>
         </div>
     );

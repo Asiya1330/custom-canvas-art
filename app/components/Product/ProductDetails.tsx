@@ -40,9 +40,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }) => {
                     <p className="text-gray-500"><strong className='text-gray-800'>Aspect Ratio:</strong> {product.aspectRatio}</p>
                     <p className="text-gray-500"><strong className='text-gray-800'>Seed:</strong> {product.seed}</p>
                     {product.negativePrompt && (
-                        <p className="text-gray-500"><strong>Negative Prompt:</strong> {product.negativePrompt}</p>
+                        <p className="text-gray-500"><strong className='text-gray-800'>Negative Prompt:</strong> {product.negativePrompt}</p>
                     )}
-                    {/* <SizesDropdown /> */}
+                    <SizesDropdown />
                     <div className="flex py-4 space-x-4">
                         <button
                             type="button"
