@@ -52,10 +52,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const product = {
         id: params.id,
         imageUrl: image.imageUrl ?? '', // Replace with actual image URL
-        name: image.description ?? 'Product Name',
+        name: image.name ?? 'Product Name',
         company: 'ABC Company',
+        prompt:image.description,
         price: 25,
-        description: image.description ?? 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae exercitationem porro saepe ea harum corrupti vero id laudantium enim, libero blanditiis expedita cupiditate a est.',
+        description: image.image_description ?? 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae exercitationem porro saepe ea harum corrupti vero id laudantium enim, libero blanditiis expedita cupiditate a est.',
         quantity: 1,
         seed:image.seed,
         negativePrompt: image.negativePrompt,
