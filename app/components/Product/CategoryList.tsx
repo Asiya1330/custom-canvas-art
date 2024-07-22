@@ -54,9 +54,9 @@ const subCategoryImageMappingCanvas = {
 };
 
 const subCategoryImageMappingFramedCanvas = {
-  102001: "/path/to/0.75in-framed-canvas.jpg",
-  102002: "/path/to/1.25in-framed-canvas.jpg",
-  102003: "/path/to/1.50in-framed-canvas.jpg",
+  102001: "/framed-canvas/0.75 framed canvas depth.png",
+  102002: "/framed-canvas/1.5 framed canvas depth.png",
+  102003: "/framed-canvas/1.25 framed canvas depth.png",
   // Add more mappings as needed
 };
 

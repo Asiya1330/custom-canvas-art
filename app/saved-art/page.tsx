@@ -1,15 +1,14 @@
 "use client";
 import { useAuth } from "@clerk/nextjs";
 import { DocumentData } from "firebase/firestore";
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import ConfirmModal from "../components/ConfirmModal";
 import ImageCard from "../components/ImageCard";
+import EditImageModalContent from "../components/Modal";
 import { deleteUserImage } from "../firebase/deleteImage";
 import { fetchUserImages } from "../firebase/fetchImages";
-import EditImageModalContent from "../components/Modal";
 
 import Modal from "react-modal";
 import { updateUserImage } from "../firebase/updateImage";
@@ -20,9 +19,9 @@ const SavedArtPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<DocumentData | null>(null);
-    const router = useRouter();
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [imageToDelete, setImageToDelete] = useState<{ id: string, url: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -56,7 +55,7 @@ const SavedArtPage: React.FC = () => {
 
     const confirmDelete = async () => {
         if (!userId || !imageToDelete) return;
-
+        setIsDeleting(true);
         try {
             await deleteUserImage(userId, imageToDelete.id, imageToDelete.url);
             toast.success("Image Deleted Successfully");
@@ -67,6 +66,7 @@ const SavedArtPage: React.FC = () => {
         } finally {
             setIsConfirmModalOpen(false);
             setImageToDelete(null);
+            setIsDeleting(false);
         }
     };
 
@@ -136,6 +136,7 @@ const SavedArtPage: React.FC = () => {
                     isOpen={isConfirmModalOpen}
                     onClose={() => setIsConfirmModalOpen(false)}
                     onConfirm={confirmDelete}
+                    isDeleting={isDeleting}
                 />
             </div>
         </div>

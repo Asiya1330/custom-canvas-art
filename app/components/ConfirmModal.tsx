@@ -1,12 +1,14 @@
 import React from 'react';
+import { ClipLoader } from 'react-spinners';
 
 interface ConfirmModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    isDeleting: boolean;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,isDeleting }) => {
     if (!isOpen) return null;
 
     return (
@@ -18,14 +20,16 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm 
                     <button
                         className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                         onClick={onClose}
+                        disabled={isDeleting}
                     >
                         Cancel
                     </button>
                     <button
-                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                        className="px-4 py-2 flex items-center justify-center bg-red-600 text-white rounded hover:bg-red-700"
                         onClick={onConfirm}
+                        disabled={isDeleting}
                     >
-                        Delete
+                        {isDeleting ? <ClipLoader size={20} color={"#fff"} loading={true} /> : "Delete"}
                     </button>
                 </div>
             </div>

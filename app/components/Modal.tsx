@@ -1,5 +1,6 @@
 import { DocumentData } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
+import { ClipLoader } from 'react-spinners';
 
 interface EditImageModalContentProps {
     image: DocumentData | null;
@@ -10,7 +11,7 @@ interface EditImageModalContentProps {
 const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, onSave, onClose }) => {
     const [name, setName] = useState('');
     const [imageDescription, setImageDescription] = useState('');
-
+    const [isSaving, setIsSaving] = useState(false);
     useEffect(() => {
         if (image) {
             setName(image.name || '');
@@ -18,8 +19,10 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
         }
     }, [image]);
 
-    const handleSave = () => {
-        onSave(name, imageDescription);
+    const handleSave = async () => {
+        setIsSaving(true);
+        await onSave(name, imageDescription);
+        setIsSaving(false);
     };
 
     if (!image) return null;
@@ -79,15 +82,17 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
                         </div>
                     )}
                     <div className="flex">
-                        <button
+                    <button
                             onClick={handleSave}
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2"
+                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2 flex items-center"
+                            disabled={isSaving} // Disable the button while saving
                         >
-                            Save
+                            {isSaving ? <ClipLoader size={20} color={"#fff"} className="mr-2" />: "Save"}
                         </button>
                         <button
                             onClick={onClose}
                             className="mt-4 px-4 py-2 bg-gray-500 text-white rounded"
+                            disabled={isSaving}
                         >
                             Cancel
                         </button>
