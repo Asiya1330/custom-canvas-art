@@ -1,29 +1,67 @@
 "use client"
-import { SignedOut } from "@clerk/nextjs";
-import Link from "next/link";
-import ImageCarousel from "./components/ImageCarousal/ImageCarousal";
-import ThreeImageDisplay from "./components/ThreeImagesDisplay";
+import CardGrid from "./components/Home/CardGrid";
+import FooterTop from "./components/Home/FooterTop";
+import Hero from "./components/Home/Hero";
+import Steps from "./components/Home/Steps";
 
 export default function Home() {
+  const cards = [
+    {
+      imageSrc: "/home/cup-icon.png",
+      title: "One of A Kind Art",
+      description: "Create stunning personalized posters with unique art crafted just for you."
+    },
+    {
+      imageSrc: "/home/cup-icon.png",
+      title: "Satisfaction Guarantee",
+      description: "Your satisfaction is our priority, ensuring you love your purchase every time."
+    },
+    {
+      imageSrc: "/home/cup-icon.png",
+      title: "Unchained Creativity",
+      description: "Embark on a journey to unlock the limitless potential of unchained creativity."
+    },
+    {
+      imageSrc: "/home/cup-icon.png",
+      title: "Affordable Prices",
+      description: "Our range of high-quality offerings at prices designed to fit your budget."
+    }
+  ];
+
+  const steps = [
+    {
+      title: "Imagine Your Art",
+      description: "Start by using our advanced AI tool to visualize the perfect piece of art. Choose from a variety of styles, themes, and inspirations to create something that truly reflects your personality and complements your home decor.",
+      icon: '/home/emoji-home.png'
+    },
+    {
+      title: "Customize and Order",
+      description: "Once you've designed your ideal artwork, you can customize it further to ensure it fits perfectly in your space. Adjust the size, color palette, and any other details to match your vision.",
+      icon: '/home/emoji-home.png'
+    },
+    {
+      title: "Receive and Enjoy",
+      description: "When it arrives, you'll have a unique, personalized piece that adds a special touch to your home. Enjoy the compliments and the satisfaction of having a one-of-a-kind art piece that you created.",
+      icon: '/home/emoji-home.png'
+    }
+  ];
+  const handleButtonClick = () => {
+    alert("Button clicked!");
+  };
   return (
     <>
-      <section className="container mx-auto my-16">
-        <div className="flex justify-between items-center flex-col md:flex-row px-4" >
-          <div className="w-full md:w-3/4 md:text-start  text-center">
-            <h2 className=" text-2xl md:text-4xl font-bold text-gray-700">Create custom art for your home in seconds, delivered to your door in days</h2>
-            <p className="mt-2 text-gray-700">Get a one-of-a kind piece in the exact size you want.</p>
-          </div>
-          <SignedOut>
-            <div className="w-full md:w-1/4 flex flex-col items-center mt-4 md:mt-0">
-              <p className="text-custom-black mb-2">Create an account</p>
-              <Link href={"/sign-up"} className="bg-custom-green text-white text-center px-10 py-2  hover:bg-green-500 w-fit">Start</Link>
-            </div>
-          </SignedOut>
-
-        </div>
-      </section>
+      <Hero />
+      <CardGrid cards={cards} />
       {/* <ImageCarousel /> */}
-      <ThreeImageDisplay />
+      {/* <ThreeImageDisplay /> */}
+      <Steps steps={steps} />
+      <FooterTop
+        title="Create Your Art Today!"
+        buttonText="Start Creating Art"
+        onButtonClick={handleButtonClick}
+        topLeftIconSrc="/home/left-vector.png"
+        bottomRightIconSrc="/home/right-vector.png"
+      />
     </>
   );
 }

@@ -18,7 +18,10 @@ const config: Config = {
         'custom-pink': '#CE22FA',
         'custom-black': '#01152D',
         'custom-green': '#0CA156',
-        'custom-purple-dark': '#CE22FA8E'
+        'custom-purple-dark': '#CE22FA8E',
+        'dark-black': '#01060D',
+        'dark-purple': '#420053',
+        'sky-blue': '#D1ECDE'
       },
       fontFamily: {
         header: ['Recoleta', 'serif'],
