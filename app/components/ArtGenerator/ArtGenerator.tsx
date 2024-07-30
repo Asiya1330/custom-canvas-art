@@ -4,37 +4,34 @@ import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { LoadingOverlay, getHeightFromAspectRatio } from '../LoadingOverlay';
-import FavoriteImage from './GeneratedImage';
+import { getHeightFromAspectRatio } from '../LoadingOverlay';
+import ImageToImage from './Tabs/ImageToImageTab';
 import Tabs from './Tabs/Tabs';
 import TextToImage from './Tabs/TextToImageTab';
-import ImageToImage from './Tabs/ImageToImageTab';
 
 
 interface ArtGeneratorProps {
   addImage: (newImage: DocumentData) => void;
+  setGeneratedImage: (image: Blob | null, description: string, seed: number, negativePrompt: string, aspectRatio: string,loading:boolean) => void;
 }
 
-const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
+const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage, setGeneratedImage }) => {
   const [activeTab, setActiveTab] = useState('text-to-image');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>('1:1');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [strength, setStrength] = useState(0.5);
   const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
   const [seed, setSeed] = useState(0);
   const [negativePrompt, setNegativePrompt] = useState('');
-  console.log("selected ratio", selectedAspectRatio)
   const handleGenerate = async () => {
     if (!description) {
       toast.error("Please add a prompt.");
       return;
     }
     setLoading(true);
-    setImageBlob(null);
-
+    setGeneratedImage(null, '', 0, '', '',true);
     try {
       let response;
       if (activeTab === 'image-to-image' && selectedFile) {
@@ -58,8 +55,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
 
       if (response.status === 200) {
         const blob = new Blob([response.data], { type: selectedFile ? 'image/jpeg' : 'image/webp' });
-        const imageUrl = URL.createObjectURL(blob);
-        setImageBlob(blob);
+        setGeneratedImage(blob, description, seed, negativePrompt, selectedAspectRatio ?? '',false);
         toast.success("Image generated successfully!");
       } else {
         console.error(`${response.status}: ${response.data.toString()}`);
@@ -128,22 +124,7 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage }) => {
           {loading ? 'Generating...' : 'Generate'}
         </button>
       </div>
-
-      {loading && (
-        <div className='relative flex mt-4 justify-center mx-auto items-center' style={{ height: `${height}px`, width: `${width}px` }}>
-          <LoadingOverlay width={width} height={height} />
-        </div>
-      )}
-      {imageBlob &&
-        <FavoriteImage
-          imageFile={imageBlob}
-          description={description}
-          seed={seed}
-          negativePrompt={negativePrompt}
-          aspectRatio={selectedAspectRatio || ''}
-          addImage={addImage}
-        />
-      }
+      
     </div>
   );
 };

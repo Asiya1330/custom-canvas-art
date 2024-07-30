@@ -2,10 +2,12 @@
 import React from 'react';
 
 const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gray-800 text-white p-4">
+    <footer className="bg-custom-black text-white p-4">
       <div className="container mx-auto text-center">
-        <p>© 2024 Custom Canvas App. All rights reserved.</p>
+        <p>© {currentYear} Custom Canvas App. All rights reserved.</p>
       </div>
     </footer>
   );

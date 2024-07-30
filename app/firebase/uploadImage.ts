@@ -5,7 +5,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 export const uploadImageToFirestore = async (
   userId: string,
   imageBlob: Blob,
+  name:string,
   description: string,
+  image_description: string,
   seed: number,
   negativePrompt: string,
   aspectRatio: string
@@ -25,7 +27,9 @@ export const uploadImageToFirestore = async (
     await addDoc(imagesCollection, {
       userId,
       imageUrl: downloadURL,
+      name,
       description,
+      image_description,
       seed,
       negativePrompt,
       aspectRatio,

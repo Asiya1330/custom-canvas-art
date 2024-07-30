@@ -9,6 +9,7 @@ interface EditImageModalContentProps {
 }
 
 const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, onSave, onClose }) => {
+    console.log("image", image);
     const [name, setName] = useState('');
     const [imageDescription, setImageDescription] = useState('');
     const [isSaving, setIsSaving] = useState(false);

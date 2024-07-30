@@ -1,5 +1,7 @@
 // components/Hero.tsx
 
+import Link from "next/link";
+
 
 const Hero = () => {
   return (
@@ -14,9 +16,9 @@ const Hero = () => {
         
       </div>
       <div className="mt-8 flex justify-center">
-        <button className="bg-custom-purple rounded-s rounded-e text-white text-center px-10 py-2 hover:bg-purple-500">
+        <Link href={"/art-generation"} className="bg-custom-purple rounded-s rounded-e text-white text-center px-10 py-2 hover:bg-purple-500">
         Start Creating Art
-        </button>
+        </Link>
       </div>
       <div className="mt-8 flex justify-center">
         <img src="/home/Home-hero.png" alt="Home Art" className="w-full lg:w-3/4" />

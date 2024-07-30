@@ -58,7 +58,6 @@ export default function Home() {
       <FooterTop
         title="Create Your Art Today!"
         buttonText="Start Creating Art"
-        onButtonClick={handleButtonClick}
         topLeftIconSrc="/home/left-vector.png"
         bottomRightIconSrc="/home/right-vector.png"
       />
