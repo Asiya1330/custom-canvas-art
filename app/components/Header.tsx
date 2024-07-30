@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiMenu } from 'react-icons/fi';
+import { FiHeart, FiMenu, FiSave, FiShoppingCart } from 'react-icons/fi';
 import { GiIndianPalace } from 'react-icons/gi';
 import SideMenu from './SideMenu';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-
+import { FaSave } from 'react-icons/fa';
+import { CiBookmark } from "react-icons/ci";
 const Header: React.FC = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
@@ -17,7 +18,7 @@ const Header: React.FC = () => {
     setIsSideMenuOpen(false);
   };
 
- 
+
   return (
     <>
       <header className="bg-custom-black text-white p-4">
@@ -35,7 +36,6 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center">
             <SignedOut>
-
               <Link href="/sign-in" passHref className="text-white mr-4 hover:underline">
                 Sign In
               </Link>
@@ -44,8 +44,14 @@ const Header: React.FC = () => {
               </Link>
             </SignedOut>
             <SignedIn>
-              <div className='mr-2 flex'>
-              <UserButton />
+              <div className='mr-2 flex items-center space-x-8'>
+                <Link href="/saved-art" passHref className="text-white hover:text-gray-300 border-r border-[#223F61] px-2">
+                  <CiBookmark size={24} style={{ strokeWidth: '1' }} />
+                </Link>
+                <Link href="/cart" passHref className="text-white hover:text-gray-300 border-r border-[#223F61] px-2 !m-0">
+                  <FiShoppingCart size={24} />
+                </Link>
+                <UserButton />
               </div>
             </SignedIn>
             <FiMenu className="text-white cursor-pointer" size={24} onClick={toggleSideMenu} />

@@ -159,7 +159,7 @@ const CategoryList = () => {
   };
 
   return (
-    <div className="w-full max-w-xs mt-4">
+    <div className="w-full sm:max-w-xs mt-4">
       <h1 className="text-xl font-semibold mb-2">Media</h1>
       <Dropdown
         label={selectedCategory ? categories.find(cat => cat.id === selectedCategory)?.name || 'Choose Print Media' : 'Choose Print Media'}
