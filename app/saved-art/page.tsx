@@ -14,6 +14,7 @@ import Modal from "react-modal";
 import { updateUserImage } from "../firebase/updateImage";
 
 const SavedArtPage: React.FC = () => {
+
     const [images, setImages] = useState<DocumentData[]>([]);
     const { userId } = useAuth();
     const [loading, setLoading] = useState(true);

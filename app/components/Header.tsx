@@ -1,13 +1,11 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
-import { FiHeart, FiMenu, FiSave, FiShoppingCart } from 'react-icons/fi';
-import { GiIndianPalace } from 'react-icons/gi';
-import SideMenu from './SideMenu';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { FaSave } from 'react-icons/fa';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import { CiBookmark } from "react-icons/ci";
+import { FiMenu, FiShoppingCart } from 'react-icons/fi';
+import SideMenu from './SideMenu';
 const Header: React.FC = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
@@ -36,12 +34,10 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center">
             <SignedOut>
-              <Link href="/sign-in" passHref className="text-white mr-4 hover:underline">
-                Sign In
-              </Link>
-              <Link href="/sign-up" passHref className="text-white mr-4 hover:underline">
-                Sign Up
-              </Link>
+              <div className='flex items-center space-x-4 justify-center'>
+              <SignUpButton mode='modal' />
+              <SignInButton mode='modal' />
+              </div>
             </SignedOut>
             <SignedIn>
               <div className='mr-2 flex items-center space-x-8'>
@@ -54,7 +50,7 @@ const Header: React.FC = () => {
                 <UserButton />
               </div>
             </SignedIn>
-            <FiMenu className="text-white cursor-pointer" size={24} onClick={toggleSideMenu} />
+            <FiMenu className="text-white cursor-pointer ml-2" size={24} onClick={toggleSideMenu} />
           </div>
         </div>
       </header>
