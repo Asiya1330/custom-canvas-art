@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 import ConfirmModal from "../components/ConfirmModal";
 import ImageCard from "../components/ImageCard";
 import EditImageModalContent from "../components/Modal";
-import { deleteUserImage } from "../firebase/deleteImage";
-import { fetchUserImages } from "../firebase/fetchImages";
+import { deleteUserImage } from "../firebase/services";
+import { fetchUserImages } from "../firebase/services";
 
 import Modal from "react-modal";
-import { updateUserImage } from "../firebase/updateImage";
+import { updateUserImage } from "../firebase/services";
 
 const SavedArtPage: React.FC = () => {
 

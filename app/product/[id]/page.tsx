@@ -1,18 +1,13 @@
 "use client"
-import CategoryList from '@/app/components/Product/CategoryList';
-import ProductDetails from '@/app/components/Product/ProductDetails';
+import CategoryList, { ProductCateory } from '@/app/components/Product/CategoryList';
 import ProductImage from '@/app/components/Product/ProductImage';
-import { fetchImage } from '@/app/firebase/fetchImages';
+import { addProductToCart, fetchImage } from '@/app/firebase/services';
 import { useAuth } from '@clerk/nextjs';
 import { DocumentData } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { MoonLoader } from 'react-spinners';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { IconButton } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Link from 'next/link';
 import { LuShoppingCart } from 'react-icons/lu';
+import { MoonLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 interface ProductPageProps {
     params: {
@@ -23,7 +18,22 @@ interface ProductPageProps {
 const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const [image, setImage] = useState<DocumentData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [addingToCart, setAddingToCart] = useState(false);
     const { userId } = useAuth();
+    const [categoryId, setCategoryId] = useState<string | null>(null);
+    const [subCategoryId, setSubCategoryId] = useState<string | null>(null);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [isCategorySelected, setIsCategorySelected] = useState(false);
+    const [isSubCategorySelected, setIsSubCategorySelected] = useState(false);
+    const [areOptionsSelected, setAreOptionsSelected] = useState(false);
+    const [productCateory, setProductCateory] = useState<ProductCateory>({
+        categoryId: null,
+        categoryName: null,
+        subCategoryId: null,
+        subCategoryName: null,
+        selectedOptions: [],
+    });
+
 
 
     useEffect(() => {
@@ -68,7 +78,61 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         seed: image.seed,
         negativePrompt: image.negativePrompt,
         aspectRatio: image.aspectRatio,
+        categoryId: productCateory.categoryId, // Include category, subcategory, and options
+        subCategoryId: productCateory.subCategoryId,
+        selectedOptions: productCateory.selectedOptions,
 
+    };
+
+
+    // Define the `validateSelections` function outside the useEffect
+    const validateSelections = (product: any) => {
+        console.log(product,"validateSelect",productCateory);
+        return product.categoryId && product.subCategoryId && product.selectedOptions.length > 0;
+    };
+
+
+    const addToCart = async () => {
+        if (!userId) {
+            toast.error('Please log in to add items to the cart.');
+            return;
+        }
+
+        if (!validateSelections(product)) {
+            toast.error('Please select a category, subcategory, and options before adding to the cart.');
+            return;
+        }
+
+        try {
+            setAddingToCart(true);
+            const productToAdd = {
+                productId: product.id,
+                name: product.name,
+                imageUrl: product.imageUrl,
+                price: product.price,
+                quantity: 1,
+                description: product.description,
+                seed: product.seed,
+                negativePrompt: product.negativePrompt,
+                aspectRatio: product.aspectRatio,
+                categoryId: productCateory.categoryId, // Include category, subcategory, and options
+                subCategoryId: productCateory.subCategoryId,
+                selectedOptions: productCateory.selectedOptions,
+            };
+            await addProductToCart(userId, productToAdd);
+            toast.success('Product added to cart!');
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+            toast.error('Error adding product to cart. Please try again.');
+        } finally {
+            setAddingToCart(false);
+        }
+    };
+
+
+    const handleProductUpdate = (updatedProduct: ProductCateory) => {
+        console.log("Update Product", updatedProduct);
+        setProductCateory(updatedProduct);
     };
 
     return (
@@ -99,16 +163,22 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
                     </div>
                     <div className="md:flex-1 px-4">
-                        <CategoryList />
+                        <CategoryList onProductUpdate={handleProductUpdate} />
 
                         <div className="flex items-center space-x-4 sm:max-w-xs">
-                            <button className="flex-1 bg-custom-purple rounded text-white text-center px-10 py-2 hover:bg-purple-500">
+                            <button
+                                disabled={addingToCart}
+                                className="flex-1 bg-custom-purple rounded text-white text-center px-10 py-2 hover:bg-purple-500">
                                 Checkout
                             </button>
-                            <button className="flex-none border border-custom-purple bg-white text-custom-purple rounded text-center px-4 py-2 hover:bg-custom-purple hover:text-white transition">
+                            <button
+                                className={`flex-none border border-custom-purple bg-white text-custom-purple rounded text-center px-4 py-2 ${addingToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-custom-purple hover:text-white transition'}`}
+                                onClick={addToCart}
+                                disabled={addingToCart} // Disable while adding to cart
+                            >
                                 <LuShoppingCart />
                             </button>
-                            </div>
+                        </div>
 
                     </div>
                 </div>

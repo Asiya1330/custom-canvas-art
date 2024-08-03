@@ -29,14 +29,12 @@ interface SubCategory {
 interface FlattenedOption {
   value: number;
   label: string;
-  imageUrl: string;
   groupLabel: string;
 }
 
 interface OptionGroupItem {
   optionId: number;
   optionName: string;
-  optionImageUrl: string;
 }
 
 const categoryImageMapping = {
@@ -60,8 +58,19 @@ const subCategoryImageMappingFramedCanvas = {
   // Add more mappings as needed
 };
 
+export interface ProductCateory {
+  categoryId: number | null;
+  categoryName: string | null;
+  subCategoryId: number | null;
+  subCategoryName: string | null;
+  selectedOptions: FlattenedOption[];
+}
 
-const CategoryList = () => {
+interface CategoryListProps {
+  onProductUpdate: (productCateory: ProductCateory) => void;
+}
+
+const CategoryList: React.FC<CategoryListProps> = ({ onProductUpdate }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [optionGroups, setOptionGroups] = useState<OptionGroup[]>([]);
@@ -74,6 +83,14 @@ const CategoryList = () => {
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const [showSubCategories, setShowSubCategories] = useState<boolean>(false);
   const [showOptions, setShowOptions] = useState<boolean>(false);
+
+  const [productCateory, setProductCateory] = useState<ProductCateory>({
+    categoryId: null,
+    categoryName: null,
+    subCategoryId: null,
+    subCategoryName: null,
+    selectedOptions: [],
+  });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -149,18 +166,60 @@ const CategoryList = () => {
 
   const handleSelectionChange = (selectedOption: SingleValue<FlattenedOption>, actionMeta: ActionMeta<FlattenedOption>) => {
     if (!selectedOption) return;
-
+    let updatedItems:any = [];
     // Replace the item in selectedItems that has the same groupLabel with the new selectedOption
     setSelectedItems(prevSelectedItems => {
-      const updatedItems = prevSelectedItems.filter(item => item.groupLabel !== selectedOption.groupLabel);
+       updatedItems = prevSelectedItems.filter(item => item.groupLabel !== selectedOption.groupLabel);
       updatedItems.push(selectedOption);
+      setProductCateory(prevProduct => ({
+        ...prevProduct,
+        selectedOptions: updatedItems,
+      }));
       return updatedItems;
     });
-  };
 
+    
+  };
+  const handleCategorySelection = (categoryId: number, categoryName: string) => {
+    setSelectedCategory(categoryId);
+    setSelectedSubCategory(null); // Reset subcategory
+    setSubCategories([]); // Clear subcategories
+    setShowCategories(false);
+    setSelectedItems([]); // Clear options
+    setOptionGroups([]); // Clear option groups
+    // Update product with selected category and reset subcategory and options
+    setProductCateory(prevProduct => ({
+      ...prevProduct,
+      categoryId,
+      categoryName,
+      subCategoryId: null,
+      subCategoryName: null,
+      selectedOptions: [],
+    }));
+  };
+  
+
+  const handleSubCategorySelection = (subcategoryId: number, subCategoryName: string) => {
+    setSelectedSubCategory(subcategoryId);
+    setSelectedItems([]); // Reset selected options
+    setOptionGroups([]); // Clear option groups
+    setShowSubCategories(false);
+    // Update product with selected subcategory and reset options
+    setProductCateory(prevProduct => ({
+      ...prevProduct,
+      subCategoryId: subcategoryId,
+      subCategoryName: subCategoryName,
+      selectedOptions: [],
+    }));
+  };
+  useEffect(() => {
+    onProductUpdate(productCateory);
+  }, [productCateory, onProductUpdate]);
+
+  console.log("Product: " + JSON.stringify(productCateory));
   return (
     <div className="w-full sm:max-w-xs mt-4">
-      <h1 className="text-xl font-semibold mb-2">Media</h1>
+      <h1 className="text-xl font-semibold mb-2">Media (Category)</h1>
       <Dropdown
         label={selectedCategory ? categories.find(cat => cat.id === selectedCategory)?.name || 'Choose Print Media' : 'Choose Print Media'}
         loading={loadingCategories}
@@ -173,7 +232,7 @@ const CategoryList = () => {
             id={category.id}
             name={category.name}
             imageUrl={category.imageUrl}
-            onClick={() => { setSelectedCategory(category.id); setShowCategories(false); }}
+            onClick={() => handleCategorySelection(category.id, category.name)}
           />
         ))}
       </Dropdown>
@@ -193,7 +252,7 @@ const CategoryList = () => {
                 id={subCategory.subcategoryId}
                 name={subCategory.name}
                 imageUrl={subCategory.imageUrl}
-                onClick={() => { setSelectedSubCategory(subCategory.subcategoryId); setShowSubCategories(false); }}
+                onClick={() => handleSubCategorySelection(subCategory.subcategoryId, subCategory.name)}
               />
             ))}
           </Dropdown>

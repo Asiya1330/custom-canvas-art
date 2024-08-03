@@ -1,9 +1,7 @@
 // components/TextToImage.tsx
 import React from 'react';
-import DescriptionInput from '../DescriptionInput';
-import AspectRatioBox from '../AspectRatioBox';
-import RectanglesWithArrow from '../../RectanglesWithArrow';
 import AspectRatioSelector from '../AspectRatioSelector';
+import DescriptionInput from '../DescriptionInput';
 
 interface TextToImageProps {
   description: string;
@@ -21,23 +19,6 @@ const TextToImage: React.FC<TextToImageProps> = ({ description, setDescription, 
   return (
     <div>
       <AspectRatioSelector  onAspectRatioChange={setSelectedAspectRatio}/>
-      {/* <label className="text-custom-black block">Aspect ratio</label>
-      <div className="flex flex-wrap justify-center md:justify-start w-fit flex-col">
-        <div className='block'>
-          <RectanglesWithArrow />
-        </div>
-        <div className='flex flex-wrap justify-center'>
-          {aspectRatios.map((ratio) => (
-            <AspectRatioBox
-              key={ratio}
-              aspectRatio={ratio}
-              selected={selectedAspectRatio === ratio}
-              onClick={() => setSelectedAspectRatio(ratio)}
-            />
-          ))}
-
-        </div>
-      </div> */}
       <DescriptionInput
         description={description}
         setDescription={setDescription}

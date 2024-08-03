@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { BounceLoader } from "react-spinners";
 import ArtGenerator from "../components/ArtGenerator/ArtGenerator";
 import FavoriteImage from "../components/ArtGenerator/GeneratedImage";
-import { fetchUserImages } from "../firebase/fetchImages";
+import { fetchUserImages } from "../firebase/services";
 import NoResults from "../components/ArtGenerator/Noresults";
 
 const ArtGenerationPage: React.FC = () => {

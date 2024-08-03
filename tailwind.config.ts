@@ -21,7 +21,8 @@ const config: Config = {
         'custom-purple-dark': '#CE22FA8E',
         'dark-black': '#01060D',
         'dark-purple': '#420053',
-        'sky-blue': '#D1ECDE'
+        'sky-blue': '#D1ECDE',
+        "light-gray": '#E0E3E6',
       },
       fontFamily: {
         header: ['Recoleta', 'serif'],

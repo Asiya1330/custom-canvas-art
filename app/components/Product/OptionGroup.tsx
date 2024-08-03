@@ -7,7 +7,6 @@ import Select, { SingleValue, ActionMeta, OptionProps } from 'react-select';
 interface OptionGroupItem {
   optionId: number;
   optionName: string;
-  optionImageUrl: string;
 }
 
 interface OptionGroup {
@@ -18,7 +17,6 @@ interface OptionGroup {
 interface FlattenedOption {
   value: number;
   label: string;
-  imageUrl: string;
   groupLabel: string;
 }
 
@@ -42,7 +40,7 @@ const OptionGroup: React.FC<OptionGroupProps> = ({ optionGroups, selectedItems, 
     group.optionGroupItems.map(item => ({
       value: item.optionId,
       label: item.optionName,
-      imageUrl: item.optionImageUrl,
+      // imageUrl: item.optionImageUrl,
       groupLabel: group.optionGroup,
     }))
   );

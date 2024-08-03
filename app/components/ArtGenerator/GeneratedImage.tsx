@@ -1,8 +1,8 @@
-import { uploadImageToFirestore } from '@/app/firebase/uploadImage';
+import { uploadImageToFirestore } from '@/app/firebase/services';
 import { SignInButton, SignUpButton, useAuth } from '@clerk/nextjs';
 import { DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { FaSave } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import EditImageModalContent from '../Modal';
@@ -96,7 +96,7 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description, s
           onClick={handleEditClick}
           disabled={loading || isFavorite}
         >
-          <FaSave className='mr-2' />
+          {isFavorite?<FaBookmark className="mr-2"/> : <FaRegBookmark className='mr-2' />}
           {isFavorite ? 'Saved' : 'Save to my profile'}
         </button>
 
