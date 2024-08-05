@@ -7,22 +7,22 @@ import Steps from "./components/Home/Steps";
 export default function Home() {
   const cards = [
     {
-      imageSrc: "/home/cup-icon.png",
+      imageSrc: "/home/blue-paint.png",
       title: "One of A Kind Art",
       description: "Create stunning personalized posters with unique art crafted just for you."
     },
     {
-      imageSrc: "/home/cup-icon.png",
+      imageSrc: "/home/red-heart.png",
       title: "Satisfaction Guarantee",
       description: "Your satisfaction is our priority, ensuring you love your purchase every time."
     },
     {
-      imageSrc: "/home/cup-icon.png",
+      imageSrc: "/home/green-dollar.png",
       title: "Unchained Creativity",
       description: "Embark on a journey to unlock the limitless potential of unchained creativity."
     },
     {
-      imageSrc: "/home/cup-icon.png",
+      imageSrc: "/home/yellow-bulb.png",
       title: "Affordable Prices",
       description: "Our range of high-quality offerings at prices designed to fit your budget."
     }
@@ -45,9 +45,6 @@ export default function Home() {
       icon: '/home/emoji-home.png'
     }
   ];
-  const handleButtonClick = () => {
-    alert("Button clicked!");
-  };
   return (
     <>
       <Hero />

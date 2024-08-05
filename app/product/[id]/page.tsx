@@ -20,12 +20,10 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const [loading, setLoading] = useState(true);
     const [addingToCart, setAddingToCart] = useState(false);
     const { userId } = useAuth();
-    const [categoryId, setCategoryId] = useState<string | null>(null);
-    const [subCategoryId, setSubCategoryId] = useState<string | null>(null);
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-    const [isCategorySelected, setIsCategorySelected] = useState(false);
-    const [isSubCategorySelected, setIsSubCategorySelected] = useState(false);
-    const [areOptionsSelected, setAreOptionsSelected] = useState(false);
+    const [quantity, setQuantity] = useState<number>(1);
+    const [productName, setProductName] = useState('');
+    const [imageDescription, setImageDescription] = useState('');
+
     const [productCateory, setProductCateory] = useState<ProductCateory>({
         categoryId: null,
         categoryName: null,
@@ -74,7 +72,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         prompt: image.description,
         price: 25,
         description: image.image_description ?? 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae exercitationem porro saepe ea harum corrupti vero id laudantium enim, libero blanditiis expedita cupiditate a est.',
-        quantity: 1,
+        quantity: image.quantity,
         seed: image.seed,
         negativePrompt: image.negativePrompt,
         aspectRatio: image.aspectRatio,
@@ -107,11 +105,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
             setAddingToCart(true);
             const productToAdd = {
                 productId: product.id,
-                name: product.name,
+                name: productName,
                 imageUrl: product.imageUrl,
                 price: product.price,
-                quantity: 1,
-                description: product.description,
+                quantity: quantity,
+                description: imageDescription,
                 seed: product.seed,
                 negativePrompt: product.negativePrompt,
                 aspectRatio: product.aspectRatio,
@@ -129,6 +127,12 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         }
     };
 
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value, 10);
+        if (value > 0) {
+          setQuantity(value);
+        }
+      };
 
     const handleProductUpdate = (updatedProduct: ProductCateory) => {
         console.log("Update Product", updatedProduct);
@@ -143,18 +147,18 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                         <ProductImage imageUrl={image.imageUrl} />
                         <div className="mt-4">
 
-                            <label htmlFor="" className='text-sm font-bold'>Name</label>
+                            <label htmlFor="name" className='text-sm font-bold'>Name</label>
                             <input
                                 type="text"
                                 value={image.name}
-                                // onChange={(e) => setProductName(e.target.value)}
+                                onChange={(e) => setProductName(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="Enter Title"
                             />
                             <label htmlFor="" className='text-sm font-bold'>Description</label>
                             <textarea
                                 value={image.description}
-                                // onChange={(e) => setImageDescription(e.target.value)}
+                                onChange={(e) => setImageDescription(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 rows={4}
                                 placeholder="Enter Image Description"
@@ -164,7 +168,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                     </div>
                     <div className="md:flex-1 px-4">
                         <CategoryList onProductUpdate={handleProductUpdate} />
-
+                        <label htmlFor="quantity" className="text-sm font-bold mt-4 mb-1 block">
+                            Quantity
+                        </label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            min="1"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            className="w-full sm:max-w-xs p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
                         <div className="flex items-center space-x-4 sm:max-w-xs">
                             <button
                                 disabled={addingToCart}

@@ -1,4 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { ClipLoader } from 'react-spinners';
 
@@ -13,6 +14,7 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
     const [name, setName] = useState('');
     const [imageDescription, setImageDescription] = useState('');
     const [isSaving, setIsSaving] = useState(false);
+    const router = useRouter();
     useEffect(() => {
         if (image) {
             setName(image.name || '');
@@ -24,6 +26,7 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
         setIsSaving(true);
         await onSave(name, imageDescription);
         setIsSaving(false);
+        router.push(`/product/${image?.id}`);
     };
 
     if (!image) return null;
@@ -85,10 +88,10 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
                     <div className="flex">
                     <button
                             onClick={handleSave}
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2 flex items-center"
+                            className="mt-4 px-4 py-2 bg-custom-purple text-white rounded mr-2 flex items-center hover:bg-dark-purple"
                             disabled={isSaving} // Disable the button while saving
                         >
-                            {isSaving ? <ClipLoader size={20} color={"#fff"} className="mr-2" />: "Save"}
+                            {isSaving ? <ClipLoader size={20} color={"#fff"} className="mr-2" />: "Buy Artwork"}
                         </button>
                         <button
                             onClick={onClose}

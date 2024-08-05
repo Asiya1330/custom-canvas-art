@@ -12,7 +12,8 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onEdit, onDelete }) => {
     const router = useRouter();
 
     const handleViewClick = () => {
-        router.push(`/product/${image.id}`);
+        onEdit(image);
+        // router.push(`/product/${image.id}`);
     };
 
     return (
@@ -26,10 +27,10 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onEdit, onDelete }) => {
                 className="object-cover w-full h-full"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex justify-end p-2 space-x-2">
-                <MdModeEditOutline
+                {/* <MdModeEditOutline
                     className="w-7 h-7 text-white bg-blue-500 p-1 rounded-full"
                     onClick={(e) => { e.stopPropagation(); onEdit(image); }}
-                />
+                /> */}
                 <MdDeleteOutline
                     className="w-7 h-7 text-white bg-red-500 p-1 rounded-full"
                     onClick={(e) => { e.stopPropagation(); onDelete(image.id); }}

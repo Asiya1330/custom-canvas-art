@@ -6,6 +6,16 @@ export interface Size {
     price: string;
 }
 
+export const targetMargin = 0.80;
+
+export const markupValues = {
+  "075CanvasMarkup": 15,
+  "125CanvasMarkup": 25,
+  "150CanvasMarkup": 35,
+  "framedPrintMarkup": 25,
+};
+
+
 export const sizes: Size[] = [
     { size: '8x10', price: '$8.99' },
     { size: '8x12', price: '$13.99' },
