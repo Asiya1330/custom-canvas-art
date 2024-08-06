@@ -8,6 +8,7 @@ import { getHeightFromAspectRatio } from '../LoadingOverlay';
 import ImageToImage from './Tabs/ImageToImageTab';
 import Tabs from './Tabs/Tabs';
 import TextToImage from './Tabs/TextToImageTab';
+import axios from 'axios';
 
 
 interface ArtGeneratorProps {
@@ -25,37 +26,89 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage, setGeneratedImage
   const aspectRatios = ['21:9', '16:9', '3:2', '5:4', '1:1', '4:5', '2:3', '9:16', '9:21'];
   const [seed, setSeed] = useState(0);
   const [negativePrompt, setNegativePrompt] = useState('');
+
+  // const handleGenerate = async () => {
+  //   if (!description) {
+  //     toast.error("Please add a prompt.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   setGeneratedImage(null, '', 0, '', '',true);
+  //   try {
+  //     let response;
+  //     if (activeTab === 'image-to-image' && selectedFile) {
+  //       // Call SD3 API
+  //       response = await uploadAndGenerateImage(selectedFile, description, strength, seed, negativePrompt);
+  //     } else {
+  //       // Call Ultra API
+  //       if (!selectedAspectRatio) {
+  //         toast.error("Please select an aspect ratio.");
+  //         return;
+  //       }
+  //       const payload = {
+  //         prompt: description,
+  //         aspect_ratio: selectedAspectRatio,
+  //         seed: seed,
+  //         output_format: 'jpeg',
+  //         negative_prompt: negativePrompt,
+  //       };
+  //       response = await generateImage(payload);
+  //     }
+
+  //     if (response.status === 200) {
+  //       const blob = new Blob([response.data], { type: selectedFile ? 'image/jpeg' : 'image/webp' });
+  //       setGeneratedImage(blob, description, seed, negativePrompt, selectedAspectRatio ?? '',false);
+  //       toast.success("Image generated successfully!");
+  //     } else {
+  //       console.error(`${response.status}: ${response.data.toString()}`);
+  //       toast.error(`Error: ${response.status}`);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("An error occurred while generating the image.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleGenerate = async () => {
     if (!description) {
       toast.error("Please add a prompt.");
       return;
     }
     setLoading(true);
-    setGeneratedImage(null, '', 0, '', '',true);
+    setGeneratedImage(null, '', 0, '', '', true);
     try {
       let response;
-      if (activeTab === 'image-to-image' && selectedFile) {
-        // Call SD3 API
-        response = await uploadAndGenerateImage(selectedFile, description, strength, seed, negativePrompt);
-      } else {
-        // Call Ultra API
-        if (!selectedAspectRatio) {
-          toast.error("Please select an aspect ratio.");
-          return;
-        }
-        const payload = {
-          prompt: description,
-          aspect_ratio: selectedAspectRatio,
-          seed: seed,
-          output_format: 'jpeg',
-          negative_prompt: negativePrompt,
-        };
-        response = await generateImage(payload);
+      const endpoint = activeTab === 'image-to-image' ? 'sd3' : 'ultra';
+      console.log("selected image",selectedFile)
+      // Create FormData
+      const formData = new FormData();
+      formData.append('endpoint', endpoint); // Add the endpoint to FormData
+      if (selectedFile) {
+        formData.append('image', selectedFile);
+        formData.append('mode', 'image-to-image');
       }
-
+      formData.append('prompt', description);
+      formData.append('output_format', 'jpeg');
+      formData.append('strength', strength.toString());
+      formData.append('seed', seed.toString());
+      formData.append('negative_prompt', negativePrompt || '');
+      if (activeTab === 'ultra') {
+        formData.append('aspect_ratio', selectedAspectRatio || '');
+      }
+  
+      // Make the API request with axios
+      response = await axios.post('/api/generate-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      });
+      
       if (response.status === 200) {
-        const blob = new Blob([response.data], { type: selectedFile ? 'image/jpeg' : 'image/webp' });
-        setGeneratedImage(blob, description, seed, negativePrompt, selectedAspectRatio ?? '',false);
+        const blob = new Blob([response.data], { type: 'image/jpeg' });
+        setGeneratedImage(blob, description, seed, negativePrompt, selectedAspectRatio ?? '', false);
         toast.success("Image generated successfully!");
       } else {
         console.error(`${response.status}: ${response.data.toString()}`);
@@ -68,9 +121,13 @@ const ArtGenerator: React.FC<ArtGeneratorProps> = ({ addImage, setGeneratedImage
       setLoading(false);
     }
   };
+  
+  
 
+  
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      console.log("File changed",event.target.files[0]);
       setSelectedFile(event.target.files[0]);
     } else {
       setSelectedFile(null);

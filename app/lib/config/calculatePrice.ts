@@ -5,11 +5,11 @@ import { markupValues, targetMargin } from "@/app/utils/constants";
 
 const calculateStretchedCanvasPrice = (subProduct: string, area: number): number => {
   switch (subProduct) {
-    case "0.75in stretched canvas":
+    case "0.75in Stretched Canvas":
       return (0.0351 * area + 10.2) * (1 + targetMargin) + markupValues["075CanvasMarkup"];
-    case "1.25in stretched canvas":
+    case "1.25in Stretched Canvas":
       return (0.0365 * area + 10.8) * (1 + targetMargin) + markupValues["125CanvasMarkup"];
-    case "1.50in stretched canvas":
+    case "1.50in Stretched Canvas":
       return (0.0428 * area + 12.7) * (1 + targetMargin) + markupValues["150CanvasMarkup"];
     default:
       throw new Error(`Unknown subProduct: ${subProduct}`);

@@ -13,7 +13,7 @@ interface DropdownProps {
 
 const Dropdown: FC<DropdownProps> = ({ label, loading, showDropdown, toggleDropdown, children }) => {
   return (
-    <div className="relative mb-4">
+    <div className="relative mb-2">
       {loading ? (
         <div className="flex items-center justify-center py-2">
           <BeatLoader size={20} />

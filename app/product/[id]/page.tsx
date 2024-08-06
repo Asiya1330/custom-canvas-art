@@ -1,6 +1,8 @@
 "use client"
 import CategoryList, { ProductCateory } from '@/app/components/Product/CategoryList';
 import ProductImage from '@/app/components/Product/ProductImage';
+import QuantitySelector from '@/app/components/Product/QunatitySelector';
+import SizesDropdown from '@/app/components/Sizes';
 import { addProductToCart, fetchImage } from '@/app/firebase/services';
 import { useAuth } from '@clerk/nextjs';
 import { DocumentData } from 'firebase/firestore';
@@ -23,6 +25,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const [quantity, setQuantity] = useState<number>(1);
     const [productName, setProductName] = useState('');
     const [imageDescription, setImageDescription] = useState('');
+    const [width, setWidth] = useState<number | null>(null);
+    const [height, setHeight] = useState<number | null>(null);
+    const [price, setPrice] = useState<number | null>(null);
+    const [totalPrice, setTotalPrice] = useState<number | null>(null);
+
 
     const [productCateory, setProductCateory] = useState<ProductCateory>({
         categoryId: null,
@@ -32,8 +39,47 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         selectedOptions: [],
     });
 
+    const fetchPrice = async () => {
+        if (!productCateory.categoryName || !productCateory.subCategoryName || !width || !height) {
+            return;
+        }
 
+        try {
+            console.log('Fetch', productCateory.categoryName, productCateory.subCategoryName, width, height);
+            const response = await fetch('/api/calculatePrice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product: productCateory.categoryName,
+                    subProduct: productCateory.subCategoryName,
+                    width,
+                    height,
+                }),
+            });
 
+            if (!response.ok) {
+                throw new Error('Error fetching price');
+            }
+
+            const data = await response.json();
+            setPrice(data.price);
+            setTotalPrice(data.price * quantity);
+        } catch (error) {
+            console.error('Error calculating price:', error);
+            toast.error('Error calculating price. Please try again.');
+        }
+    };
+
+    useEffect(() => {
+        fetchPrice();
+    }, [productCateory, width, height]);
+    useEffect(() => {
+        if (price !== null) {
+            setTotalPrice(price * quantity);
+        }
+    }, [price, quantity]);
     useEffect(() => {
         const getImage = async () => {
             try {
@@ -85,8 +131,13 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
     // Define the `validateSelections` function outside the useEffect
     const validateSelections = (product: any) => {
-        console.log(product,"validateSelect",productCateory);
+        console.log(product, "validateSelect", productCateory);
         return product.categoryId && product.subCategoryId && product.selectedOptions.length > 0;
+    };
+
+    const handleSizeChange = (width: number, height: number) => {
+        setWidth(width);
+        setHeight(height);
     };
 
 
@@ -130,9 +181,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
         if (value > 0) {
-          setQuantity(value);
+            setQuantity(value);
         }
-      };
+    };
 
     const handleProductUpdate = (updatedProduct: ProductCateory) => {
         console.log("Update Product", updatedProduct);
@@ -168,17 +219,17 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                     </div>
                     <div className="md:flex-1 px-4">
                         <CategoryList onProductUpdate={handleProductUpdate} />
-                        <label htmlFor="quantity" className="text-sm font-bold mt-4 mb-1 block">
-                            Quantity
-                        </label>
-                        <input
-                            type="number"
-                            id="quantity"
-                            min="1"
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                            className="w-full sm:max-w-xs p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        <SizesDropdown onSizeChange={handleSizeChange} />
+                        <QuantitySelector
+                            quantity={quantity}
+                            onQuantityChange={(q) => setQuantity(q)}
                         />
+                        {price !== null && (
+                            <div className="flex justify-between items-center mt-4 sm:max-w-xs">
+                                <label className="text-xl font-bold">Price:</label>
+                                <span className="text-xl font-semibold">${totalPrice?.toFixed(2)}</span>
+                            </div>
+                        )}
                         <div className="flex items-center space-x-4 sm:max-w-xs">
                             <button
                                 disabled={addingToCart}

@@ -215,11 +215,11 @@ const CategoryList: React.FC<CategoryListProps> = ({ onProductUpdate }) => {
   useEffect(() => {
     onProductUpdate(productCateory);
   }, [productCateory, onProductUpdate]);
-
-  console.log("Product: " + JSON.stringify(productCateory));
+  console.log(loadingOptions,"load options");
+  // console.log("Product: " + JSON.stringify(productCateory));
   return (
     <div className="w-full sm:max-w-xs mt-4">
-      <h1 className="text-xl font-semibold mb-2">Media (Category)</h1>
+      <h1 className="text-xl font-semibold">Media (Category)</h1>
       <Dropdown
         label={selectedCategory ? categories.find(cat => cat.id === selectedCategory)?.name || 'Choose Print Media' : 'Choose Print Media'}
         loading={loadingCategories}
@@ -239,7 +239,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ onProductUpdate }) => {
 
       {selectedCategory && (
         <div className="relative">
-          <h2 className="text-lg font-semibold mb-2">Subcategories</h2>
+          <h2 className="text-lg font-semibold">Subcategories</h2>
           <Dropdown
             label={selectedSubCategory ? subCategories.find(sub => sub.subcategoryId === selectedSubCategory)?.name || 'Choose Print Media sub-category' : 'Choose Print Media sub-category'}
             loading={loadingSubCategories}
@@ -259,9 +259,9 @@ const CategoryList: React.FC<CategoryListProps> = ({ onProductUpdate }) => {
         </div>
       )}
 
-      {selectedSubCategory && optionGroups.length > 0 && (
+      {selectedSubCategory && (
         <div className="relative">
-          <h2 className="text-lg font-semibold mb-2">Options</h2>
+          <h2 className="text-lg font-semibold">Options</h2>
           {loadingOptions ? (
 
             <div className="flex items-center justify-center py-2">

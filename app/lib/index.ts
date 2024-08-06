@@ -11,7 +11,7 @@ const calculatePrice = (
   const area = width * height;
 
   switch (product) {
-    case "Stretched canvas":
+    case "Canvas":
       return calculateStretchedCanvasPrice(subProduct, area);
     case "Framed canvas":
       return calculateFramedCanvasPrice(subProduct, area);
