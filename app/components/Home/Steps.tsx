@@ -1,5 +1,6 @@
 // components/Steps.tsx
 
+import Image from 'next/image';
 import React from 'react';
 
 interface Step {
@@ -22,9 +23,9 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
             <li key={index} className="group relative flex flex-col pb-8 pl-7 last:pb-0">
               <div className="absolute bottom-0 -left-1 top-0 w-1 bg-custom-purple group-first:top-3"></div>
               <div className="absolute w-4 h-4 bg-white border-[6px] top-1 border-custom-purple rounded-full -left-[0.6rem]"></div>
-              <p className="text-2xl font-semibold font-">{step.title}</p>
+              <p className="text-2xl font-semibold">{step.title}</p>
               <div className="flex mt-2">
-                <img src={step.icon} alt="" className="h-20 w-20 mr-2" />
+                  <Image src={step.icon} alt="steps" className="mr-2 object-contain h-20 w-20" width={80} height={80}/>
                 <p className="text-xl text-[#01152DE5]">{step.description}</p>
               </div>
             </li>

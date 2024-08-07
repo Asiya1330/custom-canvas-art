@@ -1,5 +1,6 @@
 // components/FooterTop.tsx
 
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -17,15 +18,22 @@ const FooterTop: React.FC<FooterTopProps> = ({
   bottomRightIconSrc
 }) => {
   return (
-    <div className="bg-custom-purple flex justify-center items-center relative h-80 text-white">
-      <img src={topLeftIconSrc} alt="Top Left Icon" className="absolute top-0 left-0 w-48 h-4w-48" />
-      <h2 className="text-6xl font-bold mr-4">{title}</h2>
+    <div className="bg-custom-purple flex sm:flex-row flex-col justify-center items-center relative md:h-80 h-40 text-white">
+      <div className='lg:w-48 lg:h-48 md:w-28 md:h-28 h-10 w-10 absolute top-0 left-0'>
+        <Image src={topLeftIconSrc} alt="Top Left Icon" className=""
+          fill />
+      </div>
+      <h2 className="lg:text-6xl md:text-3xl text-2xl mb-2 sm:mb-0 font-bold mr-4">{title}</h2>
       <Link href={"/art-generation"}
-        className="bg-custom-black text-xl text-white px-4 py-2 rounded-md hover:bg-gray-800"
+        className="bg-custom-black sm:text-xl text-lg text-white px-4 py-2 rounded-md hover:bg-gray-800"
       >
         {buttonText}
       </Link>
-      <img src={bottomRightIconSrc} alt="Bottom Right Icon" className="absolute bottom-0 right-0 w-48 h-4w-48" />
+      <div className='lg:w-48 lg:h-48 md:w-28 md:h-28 h-10 w-10 absolute bottom-0 right-0'>
+
+        <Image src={bottomRightIconSrc} alt="Bottom Right Icon" className=""
+          fill />
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { CiBookmark } from "react-icons/ci";
 import { FiMenu, FiShoppingCart } from 'react-icons/fi';
 import SideMenu from './SideMenu';
+
 const Header: React.FC = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 

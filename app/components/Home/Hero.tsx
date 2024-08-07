@@ -1,5 +1,6 @@
 // components/Hero.tsx
 
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -20,8 +21,9 @@ const Hero = () => {
         Start Creating Art
         </Link>
       </div>
-      <div className="mt-8 flex justify-center">
-        <img src="/home/Home-hero.png" alt="Home Art" className="w-full lg:w-3/4" />
+      <div className="mt-8 flex justify-center h-36 sm:h-80 md:h-[30rem] relative">
+        <Image src="/home/Home-hero.png" alt="Home Art" className="object-contain" fill />
+
       </div>
     </section>
   );

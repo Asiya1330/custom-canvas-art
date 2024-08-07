@@ -12,7 +12,7 @@ const NoResults: React.FC<NoResultsProps> = ({ message, imageSrc }) => {
       <div className="relative w-48 h-48">
         <Image src={imageSrc} alt="No results" layout="fill" objectFit="contain" />
       </div>
-      <p className="text-lg  mt-4">{message}</p>
+      <p className="text-lg mt-4">{message}</p>
     </div>
   );
 };

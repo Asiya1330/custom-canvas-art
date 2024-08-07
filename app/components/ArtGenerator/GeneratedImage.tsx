@@ -71,7 +71,7 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description, s
 
 
   const handleEditClick = () => {
-    setSelectedImage({ id: new Date().toISOString(), imageUrl, description, seed, negativePrompt, aspectRatio });
+    setSelectedImage({ imageUrl, description, seed, negativePrompt, aspectRatio });
     setIsEditModalOpen(true);
   };
 
@@ -96,7 +96,7 @@ const FavoriteImage: React.FC<FavoriteImageProps> = ({ imageFile, description, s
           onClick={handleEditClick}
           disabled={loading || isFavorite}
         >
-          {isFavorite?<FaBookmark className="mr-2"/> : <FaRegBookmark className='mr-2' />}
+          {isFavorite? <FaBookmark className="mr-2"/> : <FaRegBookmark className='mr-2' />}
           {isFavorite ? 'Saved' : 'Save to my profile'}
         </button>
 
