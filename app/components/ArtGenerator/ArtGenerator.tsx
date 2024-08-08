@@ -1,6 +1,6 @@
 // components/ArtGenerator.tsx
 "use client";
-import { generateImage, uploadAndGenerateImage } from '@/app/api/stabilityApi';
+import axios from 'axios';
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -8,7 +8,6 @@ import { getHeightFromAspectRatio } from '../LoadingOverlay';
 import ImageToImage from './Tabs/ImageToImageTab';
 import Tabs from './Tabs/Tabs';
 import TextToImage from './Tabs/TextToImageTab';
-import axios from 'axios';
 
 
 interface ArtGeneratorProps {
