@@ -215,8 +215,6 @@ const CategoryList: React.FC<CategoryListProps> = ({ onProductUpdate }) => {
   useEffect(() => {
     onProductUpdate(productCateory);
   }, [productCateory, onProductUpdate]);
-  console.log(loadingOptions,"load options");
-  // console.log("Product: " + JSON.stringify(productCateory));
   return (
     <div className="w-full sm:max-w-xs mt-4">
       <h1 className="text-xl font-semibold">Media (Category)</h1>

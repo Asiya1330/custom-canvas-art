@@ -29,7 +29,7 @@ interface SizesDropdownProps {
     };
 
     return (
-        <div className="sm:max-w-xs flex items-center">
+        <div className="sm:max-w-xs flex items-center mt-4">
             <h2 className="text-lg font-bold w-1/3">Select Size:</h2>
             {/* <div className="mb-4">
                 <label className="inline-flex items-center">

@@ -98,7 +98,7 @@ interface CartItem {
   productId: string;
   name: string;
   imageUrl: string;
-  price: number;
+  price: number | null;
   quantity: number;
   description: string;
   seed: string;

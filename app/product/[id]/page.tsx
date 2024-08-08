@@ -116,7 +116,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         name: image.name ?? 'Product Name',
         company: 'ABC Company',
         prompt: image.description,
-        price: 25,
+        price: totalPrice,
         description: image.image_description ?? 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae exercitationem porro saepe ea harum corrupti vero id laudantium enim, libero blanditiis expedita cupiditate a est.',
         quantity: image.quantity,
         seed: image.seed,
@@ -131,7 +131,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
     // Define the `validateSelections` function outside the useEffect
     const validateSelections = (product: any) => {
-        console.log(product, "validateSelect", productCateory);
         return product.categoryId && product.subCategoryId && product.selectedOptions.length > 0;
     };
 
@@ -158,7 +157,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                 productId: product.id,
                 name: productName,
                 imageUrl: product.imageUrl,
-                price: product.price,
+                price: totalPrice,
                 quantity: quantity,
                 description: imageDescription,
                 seed: product.seed,
@@ -178,13 +177,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
         }
     };
 
-    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
-        if (value > 0) {
-            setQuantity(value);
-        }
-    };
-
     const handleProductUpdate = (updatedProduct: ProductCateory) => {
         console.log("Update Product", updatedProduct);
         setProductCateory(updatedProduct);
@@ -198,7 +190,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                         <ProductImage imageUrl={image.imageUrl} />
                         <div className="mt-4">
 
-                            <label htmlFor="name" className='text-sm font-bold'>Name</label>
+                            <label htmlFor="name" className='text-sm font-bold'>Name:</label>
                             <input
                                 type="text"
                                 value={image.name}
@@ -206,7 +198,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                                 className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="Enter Title"
                             />
-                            <label htmlFor="" className='text-sm font-bold'>Description</label>
+                            <label htmlFor="" className='text-sm font-bold'>Description:</label>
                             <textarea
                                 value={image.description}
                                 onChange={(e) => setImageDescription(e.target.value)}
@@ -230,7 +222,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                                 <span className="text-xl font-semibold">${totalPrice?.toFixed(2)}</span>
                             </div>
                         )}
-                        <div className="flex items-center space-x-4 sm:max-w-xs">
+                        <div className="flex items-center space-x-4 sm:max-w-xs mt-4">
                             <button
                                 disabled={addingToCart}
                                 className="flex-1 bg-custom-purple rounded text-white text-center px-10 py-2 hover:bg-purple-500">

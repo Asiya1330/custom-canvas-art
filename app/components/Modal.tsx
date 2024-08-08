@@ -50,7 +50,7 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
                 </div>
                 <div className="w-full sm:w-1/2 sm:pl-4">
                     <div className="mb-4">
-                        <label className="block mb-1 font-bold">Name:</label>
+                        <label className="block mb-1 font-bold">Name: </label>
                         <input
                             type="text"
                             value={name}
@@ -59,7 +59,7 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1 font-bold">Image Description:</label>
+                        <label className="block mb-1 font-bold">Image Description: </label>
                         <input
                             type="text"
                             value={imageDescription}
