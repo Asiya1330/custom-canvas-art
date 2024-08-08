@@ -97,7 +97,7 @@ const EditImageModalContent: React.FC<EditImageModalContentProps> = ({ image, on
                             className="mt-4 px-4 py-2 bg-custom-purple text-white rounded mr-2 flex items-center hover:bg-dark-purple"
                             disabled={isSaving} // Disable the button while saving
                         >
-                            {isSaving ? <ClipLoader size={20} color={"#fff"} className="mr-2" /> : "Buy Artwork"}
+                            {isSaving ? <ClipLoader size={20} color={"#fff"} className="mr-2" /> : (pathName === '/art-generation' ? 'Save Artwork' : 'Buy Artwork')}
                         </button>
                         <button
                             onClick={onClose}

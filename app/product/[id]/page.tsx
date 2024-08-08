@@ -23,8 +23,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const [addingToCart, setAddingToCart] = useState(false);
     const { userId } = useAuth();
     const [quantity, setQuantity] = useState<number>(1);
-    const [productName, setProductName] = useState('');
-    const [imageDescription, setImageDescription] = useState('');
+    const [productName, setProductName] = useState(image?.name || '');
+    const [imageDescription, setImageDescription] = useState(image?.description || '');
     const [width, setWidth] = useState<number | null>(null);
     const [height, setHeight] = useState<number | null>(null);
     const [price, setPrice] = useState<number | null>(null);
@@ -128,7 +128,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
     };
 
-
+    console.log("Product : ddd" + JSON.stringify(product));
     // Define the `validateSelections` function outside the useEffect
     const validateSelections = (product: any) => {
         return product.categoryId && product.subCategoryId && product.selectedOptions.length > 0;
@@ -167,6 +167,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                 subCategoryId: productCateory.subCategoryId,
                 selectedOptions: productCateory.selectedOptions,
             };
+            console.log(productToAdd,"product to add")
             await addProductToCart(userId, productToAdd);
             toast.success('Product added to cart!');
         } catch (error) {
@@ -180,6 +181,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     const handleProductUpdate = (updatedProduct: ProductCateory) => {
         console.log("Update Product", updatedProduct);
         setProductCateory(updatedProduct);
+        setPrice(null);
+        setTotalPrice(null);
     };
 
     return (
